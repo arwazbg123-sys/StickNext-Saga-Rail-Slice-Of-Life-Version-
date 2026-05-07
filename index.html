@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="StickNext Rail Saga - Koleksi fotografi Slice of Life yang menangkap momen-momen indah kehidupan sehari-hari.">
+    <meta name="theme-color" content="#fafaf8">
+    <title>StickNext Rail Saga - Slice of Life Photography</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- ===== HEADER ===== -->
+    <header>
+        <h1>STICKNEXT RAIL SAGA</h1>
+        <p>Slice of Life Photography</p>
+        <p class="photo-counter" id="photoCounter">Memuat foto...</p>
+        <nav>
+            <a href="index.html">Gallery</a>
+            <a href="pages.html">Navigasi</a>
+            <a href="about.html">Tentang</a>
+            <a href="contact.html">Kontak</a>
+        </nav>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main>
+        <!-- Search & Filter Controls -->
+        <div class="controls-section">
+            <div class="search-box">
+                <input 
+                    type="text" 
+                    id="searchInput"
+                    placeholder="Cari foto... (misal: 100, 200)"
+                    aria-label="Search photos"
+                >
+                <span class="search-icon">🔍</span>
+            </div>
+
+            <div class="sort-controls">
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="grid" title="Grid View">
+                        ⊞ Grid
+                    </button>
+                    <button class="view-btn" data-view="list" title="List View">
+                        ☰ List
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery Section -->
+        <div class="gallery-container">
+            <section id="gallery">
+                <div class="section-intro">
+                    <h2>Koleksi Foto</h2>
+                    <p>Setiap moment adalah cerita kecil dari kehidupan sehari-hari yang penuh makna</p>
+                </div>
+
+                <div class="gallery" id="galleryGrid" role="grid">
+                    <!-- Gallery items akan di-generate oleh JavaScript -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <p>&copy; 2026 StickNext Rail Saga. All rights reserved.</p>
+        <p>Slice of Life Photography Collection</p>
+    </footer>
+
+    <!-- ===== IMAGE MODAL ===== -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <span class="modal-close" id="modalClose">&times;</span>
+            <span class="modal-nav modal-prev" id="modalPrev" title="Sebelumnya (←)">&#10094;</span>
+            <img id="modalImage" src="" alt="Photo">
+            <span class="modal-nav modal-next" id="modalNext" title="Selanjutnya (→)">&#10095;</span>
+            
+            <div class="modal-info" id="modalInfo">
+                <!-- Info akan diupdate oleh JavaScript -->
+            </div>
+
+            <div class="modal-actions">
+                <button class="modal-action-btn" id="copyBtn" title="Salin URL">📋</button>
+                <button class="modal-action-btn" id="downloadBtn" title="Download">⬇️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="config.js"></script>
+    <script src="settings.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
