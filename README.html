@@ -1,0 +1,362 @@
+<!-- 
+    ========================================
+    PANDUAN MENAMBAHKAN HALAMAN BARU
+    StickNext Rail Saga - Pages Navigation
+    ========================================
+    
+    Untuk menambahkan halaman baru ke Navigation Hub:
+    
+    1. BUAT FILE HALAMAN BARU
+       - Buat file HTML baru (misal: video.html, blog.html)
+       - Copy struktur dasar dari halaman yang sudah ada (about.html atau contact.html)
+       - Sesuaikan isi halaman sesuai kebutuhan
+    
+    2. UPDATE NAVIGATION DI SEMUA HALAMAN
+       Tambahkan link ke file pages.html di navigasi:
+       
+       <nav>
+           <a href="index.html">Gallery</a>
+           <a href="pages.html">Navigasi</a>
+           <a href="about.html">Tentang</a>
+           <a href="contact.html">Kontak</a>
+       </nav>
+    
+    3. TAMBAHKAN CARD DI pages.html
+       
+       STRUKTUR CARD:
+       
+       <a href="halaman-baru.html" class="page-card" data-keywords="kata kunci, pencarian, lainnya">
+           <div class="page-icon">ICON_EMOJI</div>
+           <div class="page-title">Judul Halaman</div>
+           <div class="page-desc">Deskripsi singkat</div>
+       </a>
+       
+       CONTOH UNTUK VIDEO TUTORIAL:
+       
+       <a href="video.html" class="page-card" data-keywords="video, tutorial, media, tutorial">
+           <div class="page-icon">🎥</div>
+           <div class="page-title">Video</div>
+           <div class="page-desc">Video tutorial & behind the scene</div>
+       </a>
+    
+    4. OPSIONAL: BUAT SECTION BARU
+       
+       Jika ingin mengorganisir halaman dalam kategori baru:
+       
+       <section class="pages-section" data-category="kategori-baru">
+           <h2>🔖 Kategori Baru</h2>
+           <div class="pages-grid">
+               <!-- Tambahkan cards di sini -->
+           </div>
+       </section>
+    
+    ========================================
+    FITUR YANG SUDAH ADA:
+    ========================================
+    
+    ✅ Search/Filter - User bisa cari halaman dengan keywords
+    ✅ Responsive - Optimal di desktop, tablet, mobile
+    ✅ Auto-update - Tinggal tambah card, tidak perlu kode lain
+    ✅ Kategori - Halaman terorganisir per kategori
+    ✅ Theme Support - Tema dari settings.js sudah ter-apply
+    ✅ Coming Soon - Placeholder untuk halaman yang akan datang
+    
+    ========================================
+    KEYWORDS TIPS:
+    ========================================
+    
+    Gunakan keywords yang relevan agar mudah dicari:
+    
+    Untuk "Gallery":
+    gallery, galeri, foto, photo, utama, main, koleksi
+    
+    Untuk "About":
+    tentang, about, pameran, exhibition, filosofi, visi
+    
+    Untuk "Contact":
+    kontak, contact, hubungi, form, pesan, message
+    
+    Untuk "Video" (contoh):
+    video, tutorial, media, behind the scene, footage
+    
+    Untuk "Blog" (contoh):
+    blog, artikel, berita, news, cerita, story
+    
+    ========================================
+    STRUKTUR FOLDER SAAT INI:
+    ========================================
+    
+    StickNext Rail Saga (Slice Of life Version)/
+    ├── index.html          (Gallery utama)
+    ├── pages.html          (Navigation Hub - NEW!)
+    ├── about.html          (Tentang pameran)
+    ├── contact.html        (Form kontak)
+    ├── styles.css          (Styling global)
+    ├── config.js           (Data foto)
+    ├── script.js           (Gallery functionality)
+    ├── settings.js         (Theme & preferences)
+    └── README.html         (File ini)
+    
+    ========================================
+    CONTOH MENAMBAH 3 HALAMAN BARU:
+    ========================================
+    
+    1. Buat video.html
+    2. Buat blog.html
+    3. Buat shop.html
+    
+    Lalu di pages.html, buat section baru:
+    
+    <section class="pages-section" data-category="media">
+        <h2>🎬 Media</h2>
+        <div class="pages-grid">
+            <a href="video.html" class="page-card" data-keywords="video, tutorial, media">
+                <div class="page-icon">🎥</div>
+                <div class="page-title">Video</div>
+                <div class="page-desc">Tutorial & behind the scene</div>
+            </a>
+            <a href="blog.html" class="page-card" data-keywords="blog, artikel, cerita">
+                <div class="page-icon">📰</div>
+                <div class="page-title">Blog</div>
+                <div class="page-desc">Artikel & cerita foto</div>
+            </a>
+            <a href="shop.html" class="page-card" data-keywords="shop, jual, merchandise">
+                <div class="page-icon">🛍️</div>
+                <div class="page-title">Shop</div>
+                <div class="page-desc">Print & merchandise</div>
+            </a>
+        </div>
+    </section>
+    
+    ========================================
+    TIPS DESIGN:
+    ========================================
+    
+    - Gunakan emoji yang relevan untuk icon
+    - Judul halaman maksimal 2 kata
+    - Deskripsi singkat (3-5 kata)
+    - Keywords terpisah dengan koma
+    - Konsisten dengan naming konvensi file
+    
+    Selamat menambah halaman! 🚀
+-->
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>README - Panduan Menambahkan Halaman</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            line-height: 1.8;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        pre {
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            color: var(--text-primary);
+        }
+        h2 {
+            margin-top: 40px;
+            border-top: 2px solid var(--border-color);
+            padding-top: 20px;
+        }
+        code {
+            background: var(--primary-bg);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        ul, ol {
+            color: var(--text-secondary);
+        }
+        .tip {
+            background: var(--primary-bg);
+            border-left: 4px solid var(--text-primary);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 3px;
+        }
+        footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+    <h1>📚 Panduan Navigation Hub</h1>
+    <p>File dokumentasi untuk menambahkan halaman baru ke sistem navigasi StickNext Rail Saga.</p>
+
+    <h2>🚀 Quick Start - Cara Menambah Halaman Baru</h2>
+    
+    <h3>Langkah 1: Buat File Halaman Baru</h3>
+    <p>Buat file HTML baru dengan nama yang deskriptif (misal: <code>video.html</code>, <code>blog.html</code>)</p>
+    <p>Copy struktur dari <code>about.html</code> atau <code>contact.html</code> dan sesuaikan konten.</p>
+
+    <h3>Langkah 2: Tambah Card ke pages.html</h3>
+    <p>Buka <code>pages.html</code> dan tambahkan card baru dalam section yang sesuai:</p>
+    <pre>&lt;a href="halaman-baru.html" class="page-card" data-keywords="kata, kunci, pencarian"&gt;
+    &lt;div class="page-icon"&gt;🎥&lt;/div&gt;
+    &lt;div class="page-title"&gt;Judul&lt;/div&gt;
+    &lt;div class="page-desc"&gt;Deskripsi singkat&lt;/div&gt;
+&lt;/a&gt;</pre>
+
+    <h3>Langkah 3: Pastikan Navigation Link Konsisten</h3>
+    <p>Setiap halaman baru harus punya navbar dengan link ke <code>pages.html</code>:</p>
+    <pre>&lt;nav&gt;
+    &lt;a href="index.html"&gt;Gallery&lt;/a&gt;
+    &lt;a href="pages.html"&gt;Navigasi&lt;/a&gt;
+    &lt;a href="about.html"&gt;Tentang&lt;/a&gt;
+    &lt;a href="contact.html"&gt;Kontak&lt;/a&gt;
+&lt;/nav&gt;</pre>
+
+    <div class="tip">
+        💡 <strong>Tips:</strong> Navigation link di halaman baru juga harus sama. Ini memastikan user bisa navigasi ke halaman manapun dari halaman manapun.
+    </div>
+
+    <h2>📋 Struktur Data Halaman</h2>
+    
+    <h3>Atribut Card</h3>
+    <ul>
+        <li><code>href</code> - URL halaman (required)</li>
+        <li><code>data-keywords</code> - Keywords untuk search, dipisahkan koma</li>
+        <li><code>page-icon</code> - Emoji atau icon (1-2 karakter)</li>
+        <li><code>page-title</code> - Nama halaman (maksimal 2 kata)</li>
+        <li><code>page-desc</code> - Deskripsi singkat (3-5 kata)</li>
+    </ul>
+
+    <h2>🏷️ Recommended Keywords</h2>
+    
+    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+        <tr style="border-bottom: 2px solid var(--border-color);">
+            <th style="text-align: left; padding: 10px;">Halaman</th>
+            <th style="text-align: left; padding: 10px;">Keywords</th>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border-color);">
+            <td style="padding: 10px;">Gallery</td>
+            <td style="padding: 10px;">gallery, foto, photo, utama, main, koleksi</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border-color);">
+            <td style="padding: 10px;">Video</td>
+            <td style="padding: 10px;">video, tutorial, media, behind the scene, footage</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border-color);">
+            <td style="padding: 10px;">Blog</td>
+            <td style="padding: 10px;">blog, artikel, berita, news, cerita, story</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border-color);">
+            <td style="padding: 10px;">Shop</td>
+            <td style="padding: 10px;">shop, jual, belanja, merchandise, print</td>
+        </tr>
+        <tr>
+            <td style="padding: 10px;">About</td>
+            <td style="padding: 10px;">tentang, about, pameran, exhibition, filosofi</td>
+        </tr>
+    </table>
+
+    <h2>🎨 Struktur Section</h2>
+    
+    <p>Organizes halaman dalam kategori menggunakan section:</p>
+    <pre>&lt;section class="pages-section" data-category="nama-kategori"&gt;
+    &lt;h2&gt;🔖 Nama Kategori&lt;/h2&gt;
+    &lt;div class="pages-grid"&gt;
+        &lt;!-- Tambah cards di sini --&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</pre>
+
+    <div class="tip">
+        💡 <strong>Kategori yang ada:</strong> main, info, upcoming. Anda bisa menambah kategori baru sesuai kebutuhan.
+    </div>
+
+    <h2>📱 Responsive Design</h2>
+    
+    <p>Navigation Hub sudah fully responsive:</p>
+    <ul>
+        <li><strong>Desktop:</strong> Grid 6 kolom</li>
+        <li><strong>Tablet:</strong> Grid 4-5 kolom</li>
+        <li><strong>Mobile:</strong> Grid 2-3 kolom</li>
+    </ul>
+
+    <p>Semua spacing dan ukuran font otomatis menyesuaikan dengan pengaturan dari <code>settings.js</code>.</p>
+
+    <h2>🔍 Fitur Search</h2>
+    
+    <p>User bisa search halaman dengan:</p>
+    <ul>
+        <li>Keyword dari atribut <code>data-keywords</code></li>
+        <li>Nama halaman (<code>page-title</code>)</li>
+        <li>Deskripsi halaman (<code>page-desc</code>)</li>
+    </ul>
+
+    <p>Contoh: User mengetik "foto" akan menampilkan semua halaman yang punya keyword "foto".</p>
+
+    <h2>✨ Best Practices</h2>
+    
+    <ul>
+        <li>✅ Gunakan emoji yang relevan dan mudah dikenali</li>
+        <li>✅ Judul halaman singkat dan deskriptif</li>
+        <li>✅ Keywords banyak agar mudah dicari</li>
+        <li>✅ Konsistent naming konvensi untuk file</li>
+        <li>✅ Setiap halaman punya header dengan navbar lengkap</li>
+        <li>✅ Gunakan settings.js agar tema konsisten</li>
+        <li>🚫 Jangan ubah struktur CSS card yang ada</li>
+        <li>🚫 Jangan ubah JavaScript search function</li>
+    </ul>
+
+    <h2>📋 Contoh Menambah 3 Halaman</h2>
+    
+    <p>Berikut contoh lengkap menambahkan Video, Blog, dan Shop:</p>
+    
+    <h3>Di pages.html, tambahkan:</h3>
+    <pre>&lt;section class="pages-section" data-category="media"&gt;
+    &lt;h2&gt;🎬 Media & Konten&lt;/h2&gt;
+    &lt;div class="pages-grid"&gt;
+        &lt;a href="video.html" class="page-card" data-keywords="video, tutorial, media, footage"&gt;
+            &lt;div class="page-icon"&gt;🎥&lt;/div&gt;
+            &lt;div class="page-title"&gt;Video&lt;/div&gt;
+            &lt;div class="page-desc"&gt;Tutorial & behind the scene&lt;/div&gt;
+        &lt;/a&gt;
+        &lt;a href="blog.html" class="page-card" data-keywords="blog, artikel, berita, cerita"&gt;
+            &lt;div class="page-icon"&gt;📰&lt;/div&gt;
+            &lt;div class="page-title"&gt;Blog&lt;/div&gt;
+            &lt;div class="page-desc"&gt;Artikel & tips fotografi&lt;/div&gt;
+        &lt;/a&gt;
+        &lt;a href="shop.html" class="page-card" data-keywords="shop, jual, merchandise, print"&gt;
+            &lt;div class="page-icon"&gt;🛍️&lt;/div&gt;
+            &lt;div class="page-title"&gt;Shop&lt;/div&gt;
+            &lt;div class="page-desc"&gt;Print & merchandise&lt;/div&gt;
+        &lt;/a&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</pre>
+
+    <h2>🎯 Future Ready</h2>
+    
+    <p>Struktur navigation hub ini sudah siap untuk ratusan halaman di masa depan:</p>
+    <ul>
+        <li>✅ Search akan terus bekerja dengan optimal</li>
+        <li>✅ Layout responsive tidak akan berubah</li>
+        <li>✅ Theme setting akan otomatis apply ke halaman baru</li>
+        <li>✅ Tidak perlu modifikasi kode, hanya tambah card</li>
+    </ul>
+
+    <footer>
+        <p style="color: var(--text-tertiary); font-size: 0.9rem;">
+            📚 Untuk pertanyaan atau bantuan, buka <code>pages.html</code> untuk melihat contoh struktur yang sudah ada.
+        </p>
+    </footer>
+
+    <script src="settings.js"></script>
+</body>
+</html>

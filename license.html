@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lisensi & Hak Cipta - StickNext Rail Saga. Informasi lengkap tentang lisensi MIT dan penggunaan konten.">
+    <meta name="theme-color" content="#fafaf8">
+    <title>Lisensi & Hak Cipta - StickNext Rail Saga</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .license-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: calc(60px * var(--spacing-factor)) 20px;
+        }
+
+        .license-header {
+            text-align: center;
+            margin-bottom: calc(50px * var(--spacing-factor));
+        }
+
+        .license-header h1 {
+            font-size: 2.2rem;
+            color: var(--text-primary);
+            margin-bottom: calc(15px * var(--spacing-factor));
+            font-weight: 300;
+        }
+
+        .license-header p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        .license-section {
+            background: var(--secondary-bg);
+            padding: calc(30px * var(--spacing-factor));
+            margin-bottom: calc(30px * var(--spacing-factor));
+            border-radius: 4px;
+            border-left: 4px solid var(--text-primary);
+        }
+
+        .license-section h2 {
+            font-size: 1.4rem;
+            color: var(--text-primary);
+            margin-bottom: calc(15px * var(--spacing-factor));
+            margin-top: 0;
+            font-weight: 400;
+        }
+
+        .license-section h3 {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin: calc(20px * var(--spacing-factor)) 0 calc(10px * var(--spacing-factor)) 0;
+            font-weight: 500;
+        }
+
+        .license-section p {
+            color: var(--text-secondary);
+            margin-bottom: calc(12px * var(--spacing-factor));
+            line-height: 1.8;
+        }
+
+        .license-section ul {
+            color: var(--text-secondary);
+            margin-left: calc(20px * var(--spacing-factor));
+            margin-bottom: calc(15px * var(--spacing-factor));
+        }
+
+        .license-section li {
+            margin-bottom: calc(8px * var(--spacing-factor));
+        }
+
+        .license-code {
+            background: var(--primary-bg);
+            border: 1px solid var(--border-color);
+            padding: calc(20px * var(--spacing-factor));
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: calc(15px * var(--spacing-factor)) 0;
+            color: var(--text-primary);
+        }
+
+        .license-badge {
+            display: inline-block;
+            background: var(--primary-bg);
+            border: 2px solid var(--text-primary);
+            padding: calc(8px * var(--spacing-factor)) calc(12px * var(--spacing-factor));
+            border-radius: 4px;
+            font-weight: 500;
+            margin-right: calc(10px * var(--spacing-factor));
+            margin-bottom: calc(10px * var(--spacing-factor));
+            font-size: 0.85rem;
+        }
+
+        .copy-button {
+            background: var(--text-primary);
+            color: var(--secondary-bg);
+            border: none;
+            padding: calc(8px * var(--spacing-factor)) calc(12px * var(--spacing-factor));
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .copy-button:hover {
+            background: #2a2a2a;
+            box-shadow: var(--shadow-light);
+        }
+
+        .copyright-notice {
+            background: var(--primary-bg);
+            padding: calc(20px * var(--spacing-factor));
+            border-radius: 4px;
+            border-left: 4px solid #4CAF50;
+            margin: calc(30px * var(--spacing-factor)) 0;
+        }
+
+        .copyright-notice h3 {
+            margin-top: 0;
+            color: #4CAF50;
+        }
+
+        .github-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color var(--transition-speed) ease;
+        }
+
+        .github-link:hover {
+            border-bottom-color: var(--text-primary);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin: calc(20px * var(--spacing-factor)) 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--secondary-bg);
+        }
+
+        th, td {
+            padding: calc(12px * var(--spacing-factor));
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        th {
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .license-container {
+                padding: calc(40px * var(--spacing-factor)) 15px;
+            }
+
+            .license-section {
+                padding: calc(20px * var(--spacing-factor));
+            }
+
+            .license-code {
+                font-size: 0.8rem;
+                padding: calc(15px * var(--spacing-factor));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .license-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .license-section h2 {
+                font-size: 1.1rem;
+            }
+
+            .license-badge {
+                display: block;
+                margin-bottom: calc(10px * var(--spacing-factor));
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: calc(8px * var(--spacing-factor));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== HEADER ===== -->
+    <header>
+        <h1>STICKNEXT RAIL SAGA</h1>
+        <p>Slice of Life Photography</p>
+        <nav>
+            <a href="index.html">Gallery</a>
+            <a href="pages.html">Navigasi</a>
+            <a href="about.html">Tentang</a>
+            <a href="license.html">Lisensi</a>
+            <a href="contact.html">Kontak</a>
+        </nav>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main>
+        <div class="license-container">
+            <!-- Header -->
+            <div class="license-header">
+                <h1>📜 Lisensi & Hak Cipta</h1>
+                <p>Informasi lengkap tentang lisensi, penggunaan konten, dan hak cipta</p>
+            </div>
+
+            <!-- MIT License Section -->
+            <section class="license-section">
+                <h2>🔓 MIT License</h2>
+                <p>
+                    <strong>StickNext Rail Saga</strong> dirilis di bawah lisensi <strong>MIT</strong>, salah satu lisensi open-source paling permisif dan populer.
+                </p>
+
+                <h3>Apa yang Diizinkan?</h3>
+                <ul>
+                    <li>✅ Menggunakan untuk tujuan komersial</li>
+                    <li>✅ Memodifikasi kode sesuai kebutuhan</li>
+                    <li>✅ Mendistribusikan ulang</li>
+                    <li>✅ Menggunakan untuk tujuan pribadi</li>
+                    <li>✅ Menggunakan dalam proyek tertutup</li>
+                </ul>
+
+                <h3>Apa yang Diharuskan?</h3>
+                <ul>
+                    <li>📋 Sertakan pemberitahuan lisensi MIT dalam setiap salinan atau versi signifikan</li>
+                    <li>📄 Sertakan file LICENSE asli atau teks lisensi</li>
+                    <li>📝 Nyatakan perubahan yang dilakukan pada kode</li>
+                </ul>
+
+                <h3>Apa yang Tidak Diizinkan?</h3>
+                <ul>
+                    <li>❌ Pencipta/Pembuat tidak bertanggung jawab atas segala kerusakan</li>
+                    <li>❌ Tidak ada jaminan (kode disediakan "AS IS")</li>
+                    <li>❌ Tidak boleh menghapus pemberitahuan lisensi asli</li>
+                </ul>
+
+                <h3>Teks Lisensi MIT Lengkap</h3>
+                <div class="license-code">MIT License
+
+Copyright (c) 2026 Naufal Maulana Rizki - StickNext Rail Saga
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</div>
+
+                <div style="text-align: center;">
+                    <button class="copy-button" onclick="copyLicense()">📋 Salin Teks Lisensi</button>
+                </div>
+            </section>
+
+            <!-- Repository Section -->
+            <section class="license-section">
+                <h2>🔗 Repository GitHub</h2>
+                <p>
+                    Proyek ini tersedia secara publik di GitHub dan merupakan proyek open-source. Anda dapat menemukan kode lengkap, berkontribusi, atau membuat fork.
+                </p>
+                
+                <div style="margin: calc(20px * var(--spacing-factor)) 0;">
+                    <p>
+                        <strong>GitHub Repository:</strong><br>
+                        <a href="https://github.com/yourusername/StickNextRailSaga" class="github-link" target="_blank">
+                            github.com/yourusername/StickNextRailSaga
+                        </a>
+                    </p>
+                </div>
+
+                <p>
+                    Anda dapat melakukan fork repository ini, membuat pull request, atau membuat issues jika menemukan bug atau memiliki saran peningkatan.
+                </p>
+            </section>
+
+            <!-- Photography Rights Section -->
+            <section class="license-section">
+                <h2>📸 Hak Cipta Fotografi</h2>
+                <p>
+                    Meskipun kode di bawah MIT License, semua konten fotografi memiliki aturan penggunaan berbeda.
+                </p>
+
+                <h3>Penggunaan Foto</h3>
+                <ul>
+                    <li><strong>Personal Use:</strong> Diizinkan untuk penggunaan pribadi</li>
+                    <li><strong>Commercial Use:</strong> Hubungi kami untuk lisensi komersial</li>
+                    <li><strong>Attribution:</strong> Cantumkan kredit "© StickNext Rail Saga" jika menggunakan</li>
+                    <li><strong>Modification:</strong> Hubungi kami untuk persetujuan modifikasi</li>
+                </ul>
+
+                <div class="copyright-notice">
+                    <h3>📌 Catatan Hak Cipta Foto</h3>
+                    <p>
+                        Semua fotografi dalam galeri ini adalah hak cipta © 2026 Naufal Maulana Rizki. Penggunaan komersial atau distribusi tanpa izin tidak diizinkan. Hubungi kami melalui halaman kontak untuk permintaan lisensi khusus.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Software Components Section -->
+            <section class="license-section">
+                <h2>⚙️ Komponen & Dependensi</h2>
+                <p>
+                    StickNext Rail Saga menggunakan teknologi web standar dan tidak memiliki dependensi eksternal. Semua kode adalah kustom atau menggunakan Web API bawaan.
+                </p>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Komponen</th>
+                                <th>Jenis</th>
+                                <th>Lisensi</th>
+                                <th>Penggunaan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>HTML5</td>
+                                <td>Markup</td>
+                                <td>Standard</td>
+                                <td>Struktur halaman</td>
+                            </tr>
+                            <tr>
+                                <td>CSS3</td>
+                                <td>Styling</td>
+                                <td>Standard</td>
+                                <td>Desain & layout</td>
+                            </tr>
+                            <tr>
+                                <td>JavaScript (Vanilla)</td>
+                                <td>Logic</td>
+                                <td>MIT</td>
+                                <td>Interaktivitas</td>
+                            </tr>
+                            <tr>
+                                <td>Web Storage API</td>
+                                <td>Browser API</td>
+                                <td>Standard</td>
+                                <td>Penyimpanan pengaturan</td>
+                            </tr>
+                            <tr>
+                                <td>Intersection Observer</td>
+                                <td>Browser API</td>
+                                <td>Standard</td>
+                                <td>Lazy loading gambar</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    <strong>Tidak ada library eksternal yang digunakan.</strong> Semua fungsi dibangun dengan vanilla JavaScript dan Web API standar, memastikan kinerja optimal dan tidak ada dependensi eksternal.
+                </p>
+            </section>
+
+            <!-- Attribution Section -->
+            <section class="license-section">
+                <h2>🙏 Atribusi & Kredit</h2>
+                <h3>Pembuat Utama</h3>
+                <ul>
+                    <li><strong>Fotografi & Konsep:</strong> Naufal Maulana Rizki</li>
+                    <li><strong>Desain & Pengembangan Web:</strong> Naufal Maulana Rizki</li>
+                    <li><strong>Teknologi:</strong> Vanilla JavaScript, HTML5, CSS3</li>
+                </ul>
+
+                <h3>Emoji & Ikon</h3>
+                <p>
+                    Emoji yang digunakan dalam aplikasi ini adalah emoji Unicode standar dan tersedia di domain publik.
+                </p>
+
+                <h3>Font & Tipografi</h3>
+                <p>
+                    Aplikasi menggunakan font sistem standar dan tidak bergantung pada font eksternal, memastikan performa optimal dan kompatibilitas universal.
+                </p>
+            </section>
+
+            <!-- Terms of Use Section -->
+            <section class="license-section">
+                <h2>⚖️ Syarat Penggunaan</h2>
+
+                <h3>1. Penggunaan Website</h3>
+                <p>
+                    Website StickNext Rail Saga disediakan "sebagaimana adanya" tanpa jaminan apapun. Penggunaan website ini berarti Anda menerima semua syarat yang tercantum di halaman ini.
+                </p>
+
+                <h3>2. Konten yang Anda Upload/Submit</h3>
+                <p>
+                    Dengan mengirimkan pesan melalui formulir kontak, Anda memberikan kami hak untuk merespons dan menggunakan informasi Anda sesuai kebutuhan komunikasi.
+                </p>
+
+                <h3>3. Pembatasan Penggunaan</h3>
+                <ul>
+                    <li>Jangan gunakan untuk aktivitas ilegal</li>
+                    <li>Jangan lakukan reverse engineering tanpa izin</li>
+                    <li>Jangan lakukan spam atau scraping otomatis berlebihan</li>
+                    <li>Hormati hak cipta foto dan konten digital</li>
+                </ul>
+
+                <h3>4. Pembaruan Lisensi</h3>
+                <p>
+                    Kami berhak mengubah lisensi ini kapan saja. Perubahan besar akan dikomunikasikan melalui GitHub repository. Penggunaan lanjutan setelah perubahan dianggap sebagai penerimaan syarat baru.
+                </p>
+            </section>
+
+            <!-- Contact Section -->
+            <section class="license-section">
+                <h2>📧 Pertanyaan atau Permintaan Khusus?</h2>
+                <p>
+                    Jika Anda memiliki pertanyaan tentang lisensi, ingin menggunakan konten secara komersial, atau memerlukan perjanjian lisensi khusus, silakan hubungi kami.
+                </p>
+
+                <p>
+                    <strong>Email:</strong> <a href="mailto:contact@sticknextrailsaga.com" style="color: var(--text-primary);">contact@sticknextrailsaga.com</a>
+                </p>
+
+                <p style="margin-top: calc(20px * var(--spacing-factor));">
+                    👉 Kunjungi <a href="contact.html" style="color: var(--text-primary); border-bottom: 1px solid var(--text-primary); text-decoration: none;">halaman kontak</a> untuk mengirim pesan langsung.
+                </p>
+            </section>
+
+            <!-- Final Notice -->
+            <div class="copyright-notice">
+                <h3>📌 Pemberitahuan Akhir</h3>
+                <p>
+                    <strong>© 2026 StickNext Rail Saga - Naufal Maulana Rizki</strong>
+                </p>
+                <p style="margin: 0;">
+                    Lisensi MIT berlaku untuk kode. Fotografi dan konten kreatif memiliki perlindungan hak cipta terpisah. 
+                    Untuk informasi lebih lanjut, lihat <a href="https://github.com/yourusername/StickNextRailSaga/blob/main/LICENSE" class="github-link" target="_blank">LICENSE file di GitHub</a>.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <p>&copy; 2026 StickNext Rail Saga. All rights reserved.</p>
+        <p>Slice of Life Photography Collection</p>
+    </footer>
+
+    <script src="settings.js"></script>
+    <script>
+        // Highlight current page in nav
+        document.querySelectorAll('nav a').forEach(link => {
+            if (link.href === window.location.href) {
+                link.style.borderBottomColor = 'var(--text-primary)';
+                link.style.color = 'var(--text-primary)';
+            }
+        });
+
+        // Copy license text
+        function copyLicense() {
+            const licenseText = document.querySelector('.license-code').textContent;
+            navigator.clipboard.writeText(licenseText).then(() => {
+                alert('📋 Teks lisensi sudah dicopy ke clipboard!');
+            }).catch(() => {
+                alert('❌ Gagal menggandakan teks');
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Navigasi - StickNext Rail Saga. Jelajahi semua halaman dan konten kami.">
+    <meta name="theme-color" content="#fafaf8">
+    <title>Navigasi - StickNext Rail Saga</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .pages-search {
+            max-width: 600px;
+            margin: calc(40px * var(--spacing-factor)) auto;
+            padding: 0 20px;
+        }
+
+        .pages-search input {
+            width: 100%;
+            padding: calc(12px * var(--spacing-factor));
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+            background-color: var(--secondary-bg);
+            color: var(--text-primary);
+            transition: border-color var(--transition-speed) ease;
+        }
+
+        .pages-search input:focus {
+            outline: none;
+            border-color: var(--text-primary);
+        }
+
+        .pages-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: calc(40px * var(--spacing-factor)) 20px;
+        }
+
+        .pages-section {
+            margin-bottom: calc(60px * var(--spacing-factor));
+        }
+
+        .pages-section h2 {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: calc(25px * var(--spacing-factor));
+            font-weight: 400;
+            padding-bottom: calc(12px * var(--spacing-factor));
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .pages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: calc(15px * var(--spacing-factor));
+        }
+
+        .page-card {
+            padding: calc(20px * var(--spacing-factor));
+            background-color: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all var(--transition-speed) ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-height: 140px;
+            justify-content: center;
+        }
+
+        .page-card:hover {
+            background-color: var(--primary-bg);
+            border-color: var(--text-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .page-icon {
+            font-size: 2rem;
+            margin-bottom: calc(8px * var(--spacing-factor));
+        }
+
+        .page-title {
+            font-weight: 500;
+            font-size: 0.95rem;
+            margin-bottom: calc(4px * var(--spacing-factor));
+        }
+
+        .page-desc {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: calc(60px * var(--spacing-factor)) 20px;
+            color: var(--text-secondary);
+        }
+
+        .no-results p {
+            font-size: 1.1rem;
+            margin-bottom: calc(10px * var(--spacing-factor));
+        }
+
+        .filter-info {
+            text-align: center;
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+            margin-bottom: calc(40px * var(--spacing-factor));
+        }
+
+        @media (max-width: 768px) {
+            .pages-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: calc(12px * var(--spacing-factor));
+            }
+
+            .page-card {
+                padding: calc(15px * var(--spacing-factor));
+                min-height: 120px;
+            }
+
+            .page-icon {
+                font-size: 1.5rem;
+            }
+
+            .pages-section h2 {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .pages-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: calc(10px * var(--spacing-factor));
+            }
+
+            .page-card {
+                padding: calc(12px * var(--spacing-factor));
+                min-height: 100px;
+            }
+
+            .page-icon {
+                font-size: 1.3rem;
+                margin-bottom: calc(4px * var(--spacing-factor));
+            }
+
+            .page-title {
+                font-size: 0.8rem;
+            }
+
+            .page-desc {
+                font-size: 0.7rem;
+            }
+
+            .pages-search {
+                margin: calc(20px * var(--spacing-factor)) auto;
+            }
+
+            .pages-container {
+                padding: calc(20px * var(--spacing-factor)) 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== HEADER ===== -->
+    <header>
+        <h1>STICKNEXT RAIL SAGA</h1>
+        <p>Slice of Life Photography</p>
+        <nav>
+            <a href="index.html">Gallery</a>
+            <a href="pages.html">Navigasi</a>
+            <a href="about.html">Tentang</a>
+            <a href="license.html">Lisensi</a>
+            <a href="contact.html">Kontak</a>
+        </nav>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main>
+        <!-- Search Box -->
+        <div class="pages-search">
+            <input 
+                type="text" 
+                id="pagesSearch"
+                placeholder="Cari halaman... (misal: gallery, tentang, kontak)"
+                aria-label="Search pages"
+            >
+        </div>
+
+        <!-- Pages Container -->
+        <div class="pages-container">
+            <!-- Filter Info -->
+            <p id="filterInfo" class="filter-info"></p>
+
+            <!-- Main Section -->
+            <section class="pages-section" data-category="main">
+                <h2>📍 Utama</h2>
+                <div class="pages-grid">
+                    <a href="index.html" class="page-card" data-keywords="gallery, galeri, foto, photo, utama, main">
+                        <div class="page-icon">🖼️</div>
+                        <div class="page-title">Gallery</div>
+                        <div class="page-desc">Koleksi foto utama</div>
+                    </a>
+                    <a href="pages.html" class="page-card" data-keywords="navigasi, navigation, menu, pages, halaman">
+                        <div class="page-icon">🗺️</div>
+                        <div class="page-title">Navigasi</div>
+                        <div class="page-desc">Jelajahi semua halaman</div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Information Section -->
+            <section class="pages-section" data-category="info">
+                <h2>ℹ️ Informasi</h2>
+                <div class="pages-grid">
+                    <a href="about.html" class="page-card" data-keywords="tentang, about, pameran, exhibition, koleksi, collection">
+                        <div class="page-icon">📖</div>
+                        <div class="page-title">Tentang</div>
+                        <div class="page-desc">Tentang pameran ini</div>
+                    </a>
+                    <a href="contact.html" class="page-card" data-keywords="kontak, contact, hubungi, form, pesan, message">
+                        <div class="page-icon">✉️</div>
+                        <div class="page-title">Kontak</div>
+                        <div class="page-desc">Hubungi kami</div>
+                    </a>
+                    <a href="license.html" class="page-card" data-keywords="lisensi, license, hak cipta, copyright, mit, open source">
+                        <div class="page-icon">📜</div>
+                        <div class="page-title">Lisensi</div>
+                        <div class="page-desc">Hak cipta & lisensi</div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Coming Soon Section -->
+            <section class="pages-section" data-category="upcoming">
+                <h2>🚀 Segera Hadir</h2>
+                <div class="pages-grid">
+                    <div class="page-card" style="opacity: 0.6; cursor: not-allowed;">
+                        <div class="page-icon">🎥</div>
+                        <div class="page-title">Video</div>
+                        <div class="page-desc">Segera hadir</div>
+                    </div>
+                    <div class="page-card" style="opacity: 0.6; cursor: not-allowed;">
+                        <div class="page-icon">📰</div>
+                        <div class="page-title">Blog</div>
+                        <div class="page-desc">Segera hadir</div>
+                    </div>
+                    <div class="page-card" style="opacity: 0.6; cursor: not-allowed;">
+                        <div class="page-icon">🎁</div>
+                        <div class="page-title">Shop</div>
+                        <div class="page-desc">Segera hadir</div>
+                    </div>
+                    <div class="page-card" style="opacity: 0.6; cursor: not-allowed;">
+                        <div class="page-icon">👤</div>
+                        <div class="page-title">Profil</div>
+                        <div class="page-desc">Segera hadir</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="no-results" style="display: none;">
+                <p>😕 Tidak ada halaman yang cocok</p>
+                <p style="font-size: 0.9rem;">Coba kata kunci yang berbeda</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <p>&copy; 2026 StickNext Rail Saga. All rights reserved.</p>
+        <p>Slice of Life Photography Collection</p>
+    </footer>
+
+    <script src="settings.js"></script>
+    <script>
+        // Page search functionality
+        class PagesNavigator {
+            constructor() {
+                this.searchInput = document.getElementById('pagesSearch');
+                this.filterInfo = document.getElementById('filterInfo');
+                this.emptyState = document.getElementById('emptyState');
+                this.pageCards = document.querySelectorAll('.page-card');
+                this.sections = document.querySelectorAll('.pages-section');
+
+                this.initializeSearch();
+            }
+
+            initializeSearch() {
+                this.searchInput.addEventListener('input', (e) => {
+                    this.filterPages(e.target.value);
+                });
+
+                // Highlight current page
+                document.querySelectorAll('nav a').forEach(link => {
+                    if (link.href === window.location.href) {
+                        link.style.borderBottomColor = 'var(--text-primary)';
+                        link.style.color = 'var(--text-primary)';
+                    }
+                });
+            }
+
+            filterPages(query) {
+                const searchTerm = query.toLowerCase().trim();
+                let visibleCards = 0;
+                let visibleSections = new Set();
+
+                this.pageCards.forEach(card => {
+                    const keywords = card.dataset.keywords || '';
+                    const title = card.querySelector('.page-title')?.textContent || '';
+                    const desc = card.querySelector('.page-desc')?.textContent || '';
+                    
+                    const fullText = (keywords + ' ' + title + ' ' + desc).toLowerCase();
+                    const isVisible = !searchTerm || fullText.includes(searchTerm);
+
+                    if (isVisible) {
+                        card.style.display = '';
+                        visibleCards++;
+                        // Find parent section
+                        const section = card.closest('.pages-section');
+                        if (section) {
+                            visibleSections.add(section);
+                        }
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Show/hide sections
+                this.sections.forEach(section => {
+                    if (visibleSections.has(section)) {
+                        section.style.display = '';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+
+                // Update filter info
+                if (searchTerm) {
+                    this.filterInfo.textContent = `Ditemukan ${visibleCards} halaman`;
+                } else {
+                    this.filterInfo.textContent = `Total ${this.pageCards.length} halaman`;
+                }
+
+                // Show empty state
+                if (visibleCards === 0 && searchTerm) {
+                    this.emptyState.style.display = '';
+                } else {
+                    this.emptyState.style.display = 'none';
+                }
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            window.pagesNavigator = new PagesNavigator();
+            // Show initial count
+            window.pagesNavigator.filterPages('');
+        });
+    </script>
+</body>
+</html>
