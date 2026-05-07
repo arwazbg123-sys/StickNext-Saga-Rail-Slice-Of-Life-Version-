@@ -3,6 +3,41 @@
    Advanced Gallery Functionality
    =================================== */
 
+// ===== TOAST NOTIFICATION SYSTEM =====
+function showToast(message, type = 'info', duration = 3000) {
+    const container = document.getElementById('toastContainer') || createToastContainer();
+    
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    const icons = {
+        success: '✓',
+        error: '✗',
+        info: 'ℹ',
+        default: '•'
+    };
+    
+    toast.innerHTML = `
+        <span class="toast-icon">${icons[type] || icons.default}</span>
+        <span class="toast-text">${message}</span>
+    `;
+    
+    container.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.classList.add('hide');
+        setTimeout(() => toast.remove(), 300);
+    }, duration);
+}
+
+function createToastContainer() {
+    const container = document.createElement('div');
+    container.id = 'toastContainer';
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+    return container;
+}
+
 class PhotoGallery {
     constructor() {
         this.allPhotos = PHOTOS;
@@ -14,6 +49,7 @@ class PhotoGallery {
 
         this.initializeElements();
         this.initializeEventListeners();
+        this.setupTouchGestures();
         this.renderGallery();
         this.setupLazyLoading();
     }
@@ -30,9 +66,18 @@ class PhotoGallery {
 
     initializeEventListeners() {
         // Modal controls
-        document.getElementById('modalClose').addEventListener('click', () => this.closeModal());
-        document.getElementById('modalPrev').addEventListener('click', () => this.prevImage());
-        document.getElementById('modalNext').addEventListener('click', () => this.nextImage());
+        document.getElementById('modalClose').addEventListener('click', () => {
+            this.closeModal();
+            showToast('Modal ditutup', 'info');
+        });
+        
+        document.getElementById('modalPrev').addEventListener('click', () => {
+            this.prevImage();
+        });
+        
+        document.getElementById('modalNext').addEventListener('click', () => {
+            this.nextImage();
+        });
 
         // Search
         if (this.searchInput) {
@@ -44,12 +89,17 @@ class PhotoGallery {
 
         // View toggle
         this.viewToggleButtons.forEach(btn => {
-            btn.addEventListener('click', () => this.toggleView(btn.dataset.view));
+            btn.addEventListener('click', () => {
+                this.toggleView(btn.dataset.view);
+                showToast(`Tampilan: ${btn.dataset.view === 'grid' ? 'Grid' : 'List'}`, 'info');
+            });
         });
 
         // Modal events
         this.modal.addEventListener('click', (e) => {
-            if (e.target.id === 'imageModal') this.closeModal();
+            if (e.target.id === 'imageModal') {
+                this.closeModal();
+            }
         });
 
         // Keyboard shortcuts
@@ -67,6 +117,22 @@ class PhotoGallery {
             if (!this.modal.classList.contains('active')) {
                 document.body.style.overflow = 'auto';
             }
+        });
+
+        // Touch-friendly button feedback
+        this.setupButtonFeedback();
+    }
+
+    setupButtonFeedback() {
+        // Button feedback untuk semua buttons
+        const buttons = document.querySelectorAll('button, a');
+        buttons.forEach(btn => {
+            btn.addEventListener('touchstart', function() {
+                this.style.opacity = '0.8';
+            });
+            btn.addEventListener('touchend', function() {
+                this.style.opacity = '1';
+            });
         });
     }
 
@@ -136,14 +202,22 @@ class PhotoGallery {
 
     nextImage() {
         this.currentImageIndex = (this.currentImageIndex + 1) % this.filteredPhotos.length;
-        this.modalImage.src = this.filteredPhotos[this.currentImageIndex];
+        this.modalImage.style.animation = 'none';
+        setTimeout(() => {
+            this.modalImage.src = this.filteredPhotos[this.currentImageIndex];
+            this.modalImage.style.animation = 'zoomIn 0.3s ease';
+        }, 10);
         this.preloadAdjacentImages();
         this.updateModalInfo();
     }
 
     prevImage() {
         this.currentImageIndex = (this.currentImageIndex - 1 + this.filteredPhotos.length) % this.filteredPhotos.length;
-        this.modalImage.src = this.filteredPhotos[this.currentImageIndex];
+        this.modalImage.style.animation = 'none';
+        setTimeout(() => {
+            this.modalImage.src = this.filteredPhotos[this.currentImageIndex];
+            this.modalImage.style.animation = 'zoomIn 0.3s ease';
+        }, 10);
         this.preloadAdjacentImages();
         this.updateModalInfo();
     }
@@ -248,9 +322,10 @@ class PhotoGallery {
         const fullUrl = window.location.href.replace('index.html', '') + url;
 
         navigator.clipboard.writeText(fullUrl).then(() => {
-            alert('URL sudah dicopy ke clipboard!');
+            showToast('✓ URL berhasil dicopy ke clipboard!', 'success');
+            this.triggerHaptic();
         }).catch(() => {
-            alert('Gagal menggandakan URL');
+            showToast('✗ Gagal menggandakan URL', 'error');
         });
     }
 
@@ -262,6 +337,58 @@ class PhotoGallery {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+        showToast('⬇ Download dimulai...', 'success');
+        this.triggerHaptic();
+    }
+
+    // ===== TOUCH & GESTURE SUPPORT =====
+    setupTouchGestures() {
+        let touchStartX = 0;
+        let touchEndX = 0;
+        let touchStartY = 0;
+        let touchEndY = 0;
+
+        this.modal.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        });
+
+        this.modal.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
+            this.handleSwipe(touchStartX, touchEndX, touchStartY, touchEndY);
+        });
+    }
+
+    handleSwipe(startX, endX, startY, endY) {
+        const diffX = startX - endX;
+        const diffY = startY - endY;
+
+        // Jika swipe horizontal lebih signifikan daripada vertical
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+            if (diffX > 0) {
+                // Swipe kiri -> next image
+                this.nextImage();
+                showToast('→ Gambar berikutnya', 'info');
+            } else {
+                // Swipe kanan -> prev image
+                this.prevImage();
+                showToast('← Gambar sebelumnya', 'info');
+            }
+            this.triggerHaptic();
+        }
+    }
+
+    // ===== HAPTIC FEEDBACK =====
+    triggerHaptic(pattern = 'light') {
+        if (navigator.vibrate) {
+            const patterns = {
+                light: 10,
+                medium: 30,
+                strong: 50
+            };
+            navigator.vibrate(patterns[pattern] || 10);
+        }
     }
 
     // ===== LAZY LOADING =====
@@ -294,6 +421,9 @@ class PhotoGallery {
 
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
+    // Create toast container
+    createToastContainer();
+
     // Setup page title and meta
     document.title = GALLERY_CONFIG.title + ' - ' + GALLERY_CONFIG.subtitle;
 
@@ -303,8 +433,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add scroll-to-top functionality
     setupScrollBehavior();
 
+    // Show welcome message
+    showToast(`📸 ${GALLERY_CONFIG.totalPhotos} foto dimuat`, 'success', 2000);
+
     // Log initialization
     console.log(`📸 Gallery initialized with ${GALLERY_CONFIG.totalPhotos} photos`);
+    console.log('💡 Tip: Gunakan swipe di mobile untuk navigate, atau arrow keys di desktop');
 });
 
 // ===== SMOOTH SCROLL BEHAVIOR =====

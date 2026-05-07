@@ -322,12 +322,25 @@ class SettingsUI {
         if (settingsBtn) {
             settingsBtn.addEventListener('click', () => {
                 settingsPanel.classList.toggle('active');
+                const isOpen = settingsPanel.classList.contains('active');
+                if (isOpen) {
+                    if (typeof showToast === 'function') {
+                        showToast('⚙️ Pengaturan dibuka', 'info');
+                    }
+                    // Trigger haptic feedback
+                    if (navigator.vibrate) {
+                        navigator.vibrate(15);
+                    }
+                }
             });
         }
 
         if (settingsClose) {
             settingsClose.addEventListener('click', () => {
                 settingsPanel.classList.remove('active');
+                if (typeof showToast === 'function') {
+                    showToast('Pengaturan ditutup', 'info');
+                }
             });
         }
 
@@ -345,9 +358,20 @@ class SettingsUI {
                 if (theme === 'custom') {
                     document.getElementById('customColorSection').style.display = 'block';
                     this.themeManager.restoreCustomTheme();
+                    if (typeof showToast === 'function') {
+                        showToast('🎨 Tema Custom diaktifkan', 'success');
+                    }
                 } else {
                     document.getElementById('customColorSection').style.display = 'none';
                     this.themeManager.applyTheme(theme);
+                    const themeName = btn.textContent.trim();
+                    if (typeof showToast === 'function') {
+                        showToast(`✓ Tema ${themeName} diterapkan`, 'success');
+                    }
+                }
+                // Haptic feedback
+                if (navigator.vibrate) {
+                    navigator.vibrate(20);
                 }
             });
         });
@@ -358,6 +382,11 @@ class SettingsUI {
             fontSizeSlider.addEventListener('input', (e) => {
                 this.themeManager.applyFontSize(parseInt(e.target.value));
             });
+            fontSizeSlider.addEventListener('change', (e) => {
+                if (typeof showToast === 'function') {
+                    showToast(`Ukuran font: ${e.target.value}%`, 'info');
+                }
+            });
         }
 
         // Spacing slider
@@ -365,6 +394,11 @@ class SettingsUI {
         if (spacingSlider) {
             spacingSlider.addEventListener('input', (e) => {
                 this.themeManager.applySpacing(parseInt(e.target.value));
+            });
+            spacingSlider.addEventListener('change', (e) => {
+                if (typeof showToast === 'function') {
+                    showToast(`Spasi: ${e.target.value}%`, 'info');
+                }
             });
         }
 
@@ -388,7 +422,14 @@ class SettingsUI {
                     borderColor
                 );
 
-                alert('Warna custom telah diterapkan!');
+                if (typeof showToast === 'function') {
+                    showToast('✓ Warna custom diterapkan!', 'success');
+                }
+                
+                // Haptic feedback
+                if (navigator.vibrate) {
+                    navigator.vibrate([20, 10, 20]);
+                }
             });
         }
 
@@ -398,7 +439,15 @@ class SettingsUI {
             resetBtn.addEventListener('click', () => {
                 if (confirm('Apakah Anda yakin ingin mereset semua pengaturan ke default?')) {
                     localStorage.removeItem('gallerySettings');
-                    location.reload();
+                    if (typeof showToast === 'function') {
+                        showToast('🔄 Pengaturan direset. Halaman akan dimuat ulang...', 'info');
+                    }
+                    if (navigator.vibrate) {
+                        navigator.vibrate(30);
+                    }
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
                 }
             });
         }
