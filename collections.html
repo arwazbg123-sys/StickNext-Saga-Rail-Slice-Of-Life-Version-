@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koleksi - StickNext Rail Saga</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .collection-tabs { display: flex; gap: 1rem; margin: 2rem 0; flex-wrap: wrap; }
+        .collection-tabs button { padding: 0.75rem 1.5rem; background: var(--secondary-bg); border: 2px solid var(--border-color); color: var(--text-primary); border-radius: 6px; cursor: pointer; font-size: 1rem; transition: all 0.3s; }
+        .collection-tabs button.active { background: var(--primary-bg); border-color: var(--text-primary); }
+        .collection-tabs button:hover { border-color: var(--text-primary); }
+        .collection-content { display: none; }
+        .collection-content.active { display: block; }
+        .collection-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 2rem 0; }
+        .collection-item { position: relative; aspect-ratio: 4/5; border-radius: 8px; overflow: hidden; cursor: pointer; }
+        .collection-item img { width: 100%; height: 100%; object-fit: cover; }
+        .collection-item-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: flex-end; padding: 1rem; opacity: 0; transition: opacity 0.3s; }
+        .collection-item:hover .collection-item-overlay { opacity: 1; }
+        .collection-item-overlay p { margin: 0; color: white; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="header-title">Koleksi Tematik</h1>
+            <p class="header-subtitle">Foto-foto diorganisir berdasarkan tema dan periode</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="collection-tabs">
+            <button class="tab-btn active" data-collection="urban">Urban</button>
+            <button class="tab-btn" data-collection="landscape">Landscape</button>
+            <button class="tab-btn" data-collection="portrait">Portrait</button>
+            <button class="tab-btn" data-collection="abstract">Abstract</button>
+        </div>
+
+        <div id="urban" class="collection-content active">
+            <h3 style="color: var(--text-primary);">Koleksi Urban</h3>
+            <div class="collection-grid">
+                <div class="collection-item">
+                    <img src="lv_0_20260410110104.jpg" alt="Urban 1">
+                    <div class="collection-item-overlay"><p>Kota yang Hidup</p></div>
+                </div>
+                <div class="collection-item">
+                    <img src="lv_0_20260410110525.jpg" alt="Urban 2">
+                    <div class="collection-item-overlay"><p>Refleksi Perkotaan</p></div>
+                </div>
+                <div class="collection-item">
+                    <img src="lv_0_20260410110731.jpg" alt="Urban 3">
+                    <div class="collection-item-overlay"><p>Tekstur Jalan</p></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="landscape" class="collection-content">
+            <h3 style="color: var(--text-primary);">Koleksi Landscape</h3>
+            <div class="collection-grid">
+                <div class="collection-item">
+                    <img src="lv_0_20260411145839.jpg" alt="Landscape 1">
+                    <div class="collection-item-overlay"><p>Alam Terbuka</p></div>
+                </div>
+                <div class="collection-item">
+                    <img src="lv_0_20260411150602.jpg" alt="Landscape 2">
+                    <div class="collection-item-overlay"><p>Horizon Indah</p></div>
+                </div>
+                <div class="collection-item">
+                    <img src="lv_0_20260411152252.jpg" alt="Landscape 3">
+                    <div class="collection-item-overlay"><p>Pemandangan Alami</p></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="portrait" class="collection-content">
+            <h3 style="color: var(--text-primary);">Koleksi Portrait</h3>
+            <div class="collection-grid">
+                <div class="collection-item">
+                    <img src="lv_0_20260411135519.jpg" alt="Portrait 1">
+                    <div class="collection-item-overlay"><p>Ekspresi Manusia</p></div>
+                </div>
+                <div class="collection-item">
+                    <img src="lv_0_20260411135640.jpg" alt="Portrait 2">
+                    <div class="collection-item-overlay"><p>Karakter Pribadi</p></div>
+                </div>
+                <div class="collection-item">
+                    <img src="lv_0_20260411140442.jpg" alt="Portrait 3">
+                    <div class="collection-item-overlay"><p>Cerita Wajah</p></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="abstract" class="collection-content">
+            <h3 style="color: var(--text-primary);">Koleksi Abstract</h3>
+            <div class="collection-grid">
+                <div class="collection-item">
+                    <img src="lv_0_20260409093711.jpg" alt="Abstract 1">
+                    <div class="collection-item-overlay"><p>Bentuk Geometri</p></div>
+                </div>
+                <div class="collection-item">
+                    <img src="lv_0_20260409093848.jpg" alt="Abstract 2">
+                    <div class="collection-item-overlay"><p>Permainan Warna</p></div>
+                </div>
+                <div class="collection-item">
+                    <img src="lv_0_20260409101017.jpg" alt="Abstract 3">
+                    <div class="collection-item-overlay"><p>Pola & Tekstur</p></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 StickNext Rail Saga. Semua hak dilindungi.</p>
+    </footer>
+
+    <script src="settings.js"></script>
+    <script>
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.collection-content').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById(this.dataset.collection).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layanan - StickNext Rail Saga</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0; }
+        .service-card { background: var(--secondary-bg); border-radius: 12px; padding: 2rem; border: 2px solid var(--border-color); }
+        .service-card h3 { color: var(--text-primary); margin: 0 0 1rem 0; }
+        .service-card ul { list-style: none; padding: 0; margin: 1rem 0; }
+        .service-card li { color: var(--text-secondary); padding: 0.5rem 0; border-bottom: 1px solid var(--border-color); }
+        .service-card li:last-child { border-bottom: none; }
+        .price { color: var(--text-primary); font-size: 1.5rem; font-weight: bold; margin: 1rem 0; }
+        .cta-button { display: inline-block; padding: 0.75rem 1.5rem; background: var(--text-primary); color: var(--primary-bg); border: none; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 1rem; transition: opacity 0.3s; text-decoration: none; }
+        .cta-button:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="header-title">Layanan Fotografi</h1>
+            <p class="header-subtitle">Jasa fotografi profesional untuk berbagai kebutuhan</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <p style="color: var(--text-secondary); text-align: center; margin: 2rem 0;">
+            Kami menawarkan layanan fotografi profesional dengan pengalaman bertahun-tahun dalam menangkap momen berharga.
+        </p>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>Fotografi Event</h3>
+                <p style="color: var(--text-secondary);">Dokumentasi lengkap untuk acara spesial Anda dengan hasil berkualitas tinggi.</p>
+                <ul>
+                    <li>Pernikahan</li>
+                    <li>Ulang tahun</li>
+                    <li>Acara korporat</li>
+                    <li>Gathering keluarga</li>
+                </ul>
+                <div class="price">Mulai dari Rp 2.000.000</div>
+                <a href="contact.html" class="cta-button">Pesan Sekarang</a>
+            </div>
+
+            <div class="service-card">
+                <h3>Fotografi Produk</h3>
+                <p style="color: var(--text-secondary);">Dokumentasi produk profesional untuk keperluan komersial dan e-commerce.</p>
+                <ul>
+                    <li>Fotografi studio</li>
+                    <li>Editing profesional</li>
+                    <li>Multiple angles</li>
+                    <li>Detail shots</li>
+                </ul>
+                <div class="price">Mulai dari Rp 1.500.000</div>
+                <a href="contact.html" class="cta-button">Pesan Sekarang</a>
+            </div>
+
+            <div class="service-card">
+                <h3>Sesi Portrait</h3>
+                <p style="color: var(--text-secondary);">Sesi foto pribadi dengan konsep kreatif dan lokasi pilihan Anda.</p>
+                <ul>
+                    <li>Konsultasi tema</li>
+                    <li>Lokasi outdoor/studio</li>
+                    <li>Hasil 50+ foto</li>
+                    <li>Retouching profesional</li>
+                </ul>
+                <div class="price">Mulai dari Rp 1.000.000</div>
+                <a href="contact.html" class="cta-button">Pesan Sekarang</a>
+            </div>
+
+            <div class="service-card">
+                <h3>Paket Tahunan</h3>
+                <p style="color: var(--text-secondary);">Paket hemat untuk kebutuhan fotografi berkelanjutan Anda sepanjang tahun.</p>
+                <ul>
+                    <li>12 sesi foto</li>
+                    <li>Konsultasi gratis</li>
+                    <li>Prioritas booking</li>
+                    <li>Diskon 30%</li>
+                </ul>
+                <div class="price">Rp 12.000.000/tahun</div>
+                <a href="contact.html" class="cta-button">Pesan Sekarang</a>
+            </div>
+        </div>
+
+        <div style="background: var(--secondary-bg); padding: 2rem; border-radius: 12px; margin: 2rem 0;">
+            <h3 style="color: var(--text-primary); margin-top: 0;">FAQ</h3>
+            <div style="color: var(--text-secondary);">
+                <p><strong style="color: var(--text-primary);">Q: Apakah ada revisi gratis?</strong><br>A: Ya, kami memberikan hingga 3 revisi gratis untuk memastikan kepuasan Anda.</p>
+                <p><strong style="color: var(--text-primary);">Q: Berapa lama proses editing?</strong><br>A: Biasanya 7-14 hari kerja tergantung jumlah foto.</p>
+                <p><strong style="color: var(--text-primary);">Q: Apakah ada biaya perjalanan?</strong><br>A: Ya, untuk lokasi di luar area, ada biaya perjalanan tambahan.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 StickNext Rail Saga. Semua hak dilindungi.</p>
+    </footer>
+
+    <script src="settings.js"></script>
+</body>
+</html>

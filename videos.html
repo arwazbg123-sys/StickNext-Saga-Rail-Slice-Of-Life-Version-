@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video - StickNext Rail Saga</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .video-card { background: var(--secondary-bg); border-radius: 8px; overflow: hidden; cursor: pointer; }
+        .video-thumbnail { width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, var(--primary-bg), var(--secondary-bg)); display: flex; align-items: center; justify-content: center; position: relative; }
+        .video-play { font-size: 4rem; color: var(--text-primary); opacity: 0.7; }
+        .video-info { padding: 1rem; }
+        .video-info h3 { margin: 0 0 0.5rem 0; color: var(--text-primary); }
+        .video-info p { margin: 0; color: var(--text-secondary); font-size: 0.9rem; }
+        .coming-soon { color: var(--text-tertiary); font-style: italic; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="header-title">Galeri Video</h1>
+            <p class="header-subtitle">Konten video dari StickNext Rail Saga</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="video-grid">
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    <span class="video-play">▶</span>
+                </div>
+                <div class="video-info">
+                    <h3>Video Teaser #1</h3>
+                    <p class="coming-soon">Segera hadir...</p>
+                </div>
+            </div>
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    <span class="video-play">▶</span>
+                </div>
+                <div class="video-info">
+                    <h3>Behind The Scenes</h3>
+                    <p class="coming-soon">Segera hadir...</p>
+                </div>
+            </div>
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    <span class="video-play">▶</span>
+                </div>
+                <div class="video-info">
+                    <h3>Tutorial Fotografi</h3>
+                    <p class="coming-soon">Segera hadir...</p>
+                </div>
+            </div>
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    <span class="video-play">▶</span>
+                </div>
+                <div class="video-info">
+                    <h3>Kolaborasi Spesial</h3>
+                    <p class="coming-soon">Segera hadir...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 StickNext Rail Saga. Semua hak dilindungi.</p>
+    </footer>
+
+    <script src="settings.js"></script>
+</body>
+</html>
