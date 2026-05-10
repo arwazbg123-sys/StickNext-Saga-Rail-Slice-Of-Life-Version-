@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konten Eksklusif - StickNext Rail Saga</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --exclusive-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --exclusive-shadow: 0 10px 40px rgba(245, 87, 108, 0.3);
+        }
+
+        body {
+            background: var(--primary-bg);
+        }
+
+        .exclusive-header {
+            background: var(--exclusive-gradient);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: var(--exclusive-shadow);
+        }
+
+        .exclusive-header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .exclusive-header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .exclusive-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .content-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background: var(--primary-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background: var(--exclusive-gradient);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        .btn.logout {
+            background: #ff6b6b;
+            border-color: #ff6b6b;
+            color: white;
+        }
+
+        .btn.logout:hover {
+            background: #ee5a52;
+            border-color: #ee5a52;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+            overflow-x: auto;
+            padding-bottom: 15px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .tab.active {
+            color: var(--text-primary);
+            border-bottom-color: var(--exclusive-gradient);
+        }
+
+        .tab:hover {
+            color: var(--text-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .story-card {
+            background: var(--secondary-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .story-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .story-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .story-date {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            margin-bottom: 15px;
+        }
+
+        .story-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .story-highlight {
+            background: rgba(245, 87, 108, 0.1);
+            border-left: 4px solid #f5576c;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .tips-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .tips-list li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .tips-list li:before {
+            content: "💡";
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+
+        .footer-link {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-link a {
+            color: #f5576c;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link a:hover {
+            color: #f093fb;
+        }
+
+        @media (max-width: 768px) {
+            .exclusive-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .tabs {
+                gap: 5px;
+            }
+
+            .tab {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+
+            .story-card {
+                padding: 15px;
+            }
+
+            .story-title {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SECURITY CHECK -->
+    <script src="admin.js"></script>
+    <script>
+        const adminStorage = new AdminStorage();
+        
+        // Clear session every time page loads
+        if (!adminStorage.isHiddenPageUnlocked('exclusive')) {
+            console.log('❌ Exclusive session invalid! Redirecting to unlock...');
+            window.location.href = 'unlock-exclusive.html';
+        }
+
+        console.log('✅ Exclusive content page loaded with valid session');
+    </script>
+
+    <div class="exclusive-header">
+        <div class="exclusive-badge">💎 KONTEN EKSKLUSIF</div>
+        <h1>Behind-the-Scenes & Cerita Pribadi</h1>
+        <p>Eksplorasi cerita di balik setiap fotografi kami</p>
+    </div>
+
+    <div class="content-container">
+        <div class="controls">
+            <button class="btn" onclick="downloadStories()">📥 Download Cerita</button>
+            <button class="btn logout" onclick="handleLogout()">🚪 Keluar</button>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('behind-scenes')">🎬 Behind-the-Scenes</button>
+            <button class="tab" onclick="switchTab('stories')">📖 Cerita</button>
+            <button class="tab" onclick="switchTab('tips')">💡 Tips & Tricks</button>
+        </div>
+
+        <!-- Behind-the-Scenes Tab -->
+        <div id="behind-scenes" class="tab-content active">
+            <div class="story-card">
+                <div class="story-icon">🎥</div>
+                <h2 class="story-title">Proses Produksi Koleksi "Urban Landscape"</h2>
+                <p class="story-date">📅 Januari 2026</p>
+                <p class="story-content">
+                    Koleksi "Urban Landscape" adalah hasil dari 3 bulan penjelajahan kota dengan menggunakan kombinasi kamera profesional dan teknik pencahayaan kreatif. Setiap foto dirancang untuk menangkap esensi metropolitan sambil mempertahankan detail arsitektur yang menarik.
+                </p>
+                <div class="story-highlight">
+                    "Tantangan terbesar adalah menemukan sudut pandang yang belum banyak dieksplorasi di lokasi yang sudah familiar."
+                </div>
+                <p class="story-content">
+                    Tim kami melakukan lebih dari 500 pemotretan untuk memilih 25 foto terbaik yang ada di koleksi ini. Proses seleksi melibatkan analisis komposisi, pencahayaan, dan storytelling dari setiap gambar.
+                </p>
+            </div>
+
+            <div class="story-card">
+                <div class="story-icon">🌅</div>
+                <h2 class="story-title">Momen Spesial: Sunrise at Hidden Location</h2>
+                <p class="story-date">📅 Desember 2025</p>
+                <p class="story-content">
+                    Salah satu foto paling ikonik dalam portfolio kami diambil pada pukul 4:47 pagi dari lokasi tersembunyi yang hanya diketahui tim inti. Kami harus bangun sangat pagi dan mendaki selama 2 jam untuk tiba di lokasi pada waktu yang tepat.
+                </p>
+                <div class="story-highlight">
+                    Foto ini membutuhkan waktu tunggu 45 menit untuk cahaya yang sempurna, dan kami hanya mendapatkan 3 menit jendela waktu sebelum matahari terbit sepenuhnya.
+                </div>
+            </div>
+        </div>
+
+        <!-- Stories Tab -->
+        <div id="stories" class="tab-content">
+            <div class="story-card">
+                <div class="story-icon">📖</div>
+                <h2 class="story-title">Perjalanan Menuju Fotografi Profesional</h2>
+                <p class="story-date">📅 Cerita Pribadi</p>
+                <p class="story-content">
+                    StickNext Rail Saga dimulai sebagai hobi sederhana dengan kamera smartphone 5 tahun lalu. Apa yang dimulai sebagai dokumentasi perjalanan pribadi berkembang menjadi passion yang mendalam untuk menangkap momen dan cerita melalui lensa.
+                </p>
+                <p class="story-content">
+                    Setiap foto adalah refleksi dari perjalanan, pembelajaran, dan pertumbuhan. Kami percaya bahwa fotografi bukan hanya tentang teknik sempurna, tetapi tentang menceritakan kisah yang bermakna dan menghubungkan manusia melalui emosi visual.
+                </p>
+            </div>
+
+            <div class="story-card">
+                <div class="story-icon">🎯</div>
+                <h2 class="story-title">Misi: Mengabadikan Kehidupan Nyata</h2>
+                <p class="story-date">📅 Filosofi Kreatif</p>
+                <p class="story-content">
+                    Filosofi kami adalah menghadirkan autentisitas dalam setiap frame. Kami tidak percaya pada retouching berlebihan atau manipulasi ekstrim. Sebaliknya, kami menggunakan editing yang subtel untuk meningkatkan kualitas dan menceritakan kisah yang ingin kami sampaikan.
+                </p>
+                <div class="story-highlight">
+                    Setiap koleksi mewakili periode waktu, tempat, atau tema yang membawa pengaruh emosional khusus bagi kami.
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips & Tricks Tab -->
+        <div id="tips" class="tab-content">
+            <div class="story-card">
+                <div class="story-icon">🎨</div>
+                <h2 class="story-title">Panduan Komposisi Fotografi</h2>
+                <ul class="tips-list">
+                    <li>Rule of Thirds: Bagi frame menjadi 9 bagian untuk penempatan subjek yang seimbang</li>
+                    <li>Leading Lines: Gunakan garis alami untuk membimbing mata ke subjek utama</li>
+                    <li>Depth of Field: Mainkan dengan kedalaman fokus untuk memisahkan subjek dari latar belakang</li>
+                    <li>Framing: Gunakan elemen di sekitar untuk membuat frame dalam frame</li>
+                    <li>Symmetry: Ciptakan keseimbangan visual melalui pola dan simetri</li>
+                </ul>
+            </div>
+
+            <div class="story-card">
+                <div class="story-icon">💡</div>
+                <h2 class="story-title">Teknik Pencahayaan Profesional</h2>
+                <ul class="tips-list">
+                    <li>Golden Hour: Ambil foto selama 1 jam setelah sunrise atau 1 jam sebelum sunset</li>
+                    <li>Backlighting: Tempatkan cahaya di belakang subjek untuk efek dramatis</li>
+                    <li>Fill Light: Gunakan cahaya tambahan untuk mengisi bayangan dan mengurangi kontras</li>
+                    <li>Silhouette: Ekspos untuk background terang untuk menciptakan siluet dramatis</li>
+                    <li>Tunggu Cuaca: Awan dapat menjadi softbox alami yang sempurna</li>
+                </ul>
+            </div>
+
+            <div class="story-card">
+                <div class="story-icon">🖼️</div>
+                <h2 class="story-title">Editing dan Post-Production</h2>
+                <ul class="tips-list">
+                    <li>Kurangi ke Warna: Saturation yang terkontrol menciptakan mood yang lebih kuat</li>
+                    <li>Contrast: Tingkatkan contrast secara halus untuk definisi lebih baik</li>
+                    <li>Vibrance vs Saturation: Gunakan vibrance untuk hasil yang lebih natural</li>
+                    <li>Cropping: Jangan takut untuk mengubah komposisi di tahap editing</li>
+                    <li>Consistency: Terapkan editing style yang konsisten di seluruh koleksi</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-link">
+            <p>© 2026 StickNext Rail Saga - Konten Eksklusif</p>
+            <a href="index.html">← Kembali ke Galeri Utama</a>
+        </div>
+    </div>
+
+    <script>
+        // Session integrity check every 5 seconds
+        setInterval(function() {
+            if (!adminStorage.isHiddenPageUnlocked('exclusive')) {
+                console.log('⚠️ Exclusive session expired! Redirecting...');
+                window.location.href = 'unlock-exclusive.html';
+            }
+        }, 5000);
+
+        function switchTab(tabName) {
+            // Hide all tabs
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            // Remove active from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active to clicked tab
+            event.target.classList.add('active');
+        }
+
+        function downloadStories() {
+            const storiesData = {
+                title: 'Konten Eksklusif - StickNext Rail Saga',
+                date: new Date().toLocaleDateString('id-ID'),
+                stories: [
+                    { title: 'Proses Produksi Urban Landscape', type: 'behind-scenes' },
+                    { title: 'Momen Spesial: Sunrise at Hidden Location', type: 'behind-scenes' },
+                    { title: 'Perjalanan Menuju Fotografi Profesional', type: 'stories' },
+                    { title: 'Misi: Mengabadikan Kehidupan Nyata', type: 'stories' }
+                ]
+            };
+
+            const dataStr = JSON.stringify(storiesData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `Konten_Eksklusif_${new Date().getTime()}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+
+            console.log('✓ Cerita eksklusif diunduh');
+        }
+
+        function handleLogout() {
+            if (confirm('Keluar dari konten eksklusif?')) {
+                adminStorage.clearHiddenPageSession('exclusive');
+                sessionStorage.clear();
+                localStorage.removeItem('sticknext_exclusive_unlocked');
+                console.log('✓ Exclusive logout: Session cleared');
+                window.location.href = 'unlock-exclusive.html';
+            }
+        }
+    </script>
+</body>
+</html>

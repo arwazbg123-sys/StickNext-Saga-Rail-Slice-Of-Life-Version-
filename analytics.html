@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Analitik - StickNext Rail Saga</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --analytics-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --analytics-shadow: 0 10px 40px rgba(79, 172, 254, 0.3);
+        }
+
+        body {
+            background: var(--primary-bg);
+        }
+
+        .analytics-header {
+            background: var(--analytics-gradient);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: var(--analytics-shadow);
+        }
+
+        .analytics-header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .analytics-header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .analytics-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .analytics-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background: var(--primary-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background: var(--analytics-gradient);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        .btn.logout {
+            background: #ff6b6b;
+            border-color: #ff6b6b;
+            color: white;
+        }
+
+        .btn.logout:hover {
+            background: #ee5a52;
+            border-color: #ee5a52;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--secondary-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #4facfe;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .chart-section {
+            background: var(--secondary-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .chart-placeholder {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.1) 0%, rgba(0, 242, 254, 0.1) 100%);
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 200px;
+            margin-bottom: 10px;
+        }
+
+        .bar {
+            width: 40px;
+            background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 4px 4px 0 0;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .bar:hover {
+            opacity: 1;
+            filter: drop-shadow(0 0 10px #4facfe);
+        }
+
+        .table-section {
+            background: var(--secondary-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 2px solid var(--border-color);
+            color: var(--text-primary);
+            font-weight: 600;
+            background: rgba(79, 172, 254, 0.05);
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: rgba(79, 172, 254, 0.05);
+        }
+
+        .footer-link {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-link a {
+            color: #4facfe;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link a:hover {
+            color: #00f2fe;
+        }
+
+        .last-update {
+            text-align: center;
+            color: var(--text-tertiary);
+            font-size: 0.85rem;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .analytics-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .chart-section,
+            .table-section {
+                padding: 15px;
+            }
+
+            .stat-card {
+                padding: 15px;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-bars {
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SECURITY CHECK -->
+    <script src="admin.js"></script>
+    <script>
+        const adminStorage = new AdminStorage();
+        
+        // Clear session every time page loads
+        if (!adminStorage.isHiddenPageUnlocked('analytics')) {
+            console.log('❌ Analytics session invalid! Redirecting to unlock...');
+            window.location.href = 'unlock-analytics.html';
+        }
+
+        console.log('✅ Analytics page loaded with valid session');
+    </script>
+
+    <div class="analytics-header">
+        <div class="analytics-badge">📊 DASHBOARD ANALITIK</div>
+        <h1>Performa Website & Statistik</h1>
+        <p>Real-time monitoring dan analisis pengunjung</p>
+    </div>
+
+    <div class="analytics-container">
+        <div class="controls">
+            <button class="btn" onclick="exportAnalytics()">📥 Export Data</button>
+            <button class="btn" onclick="refreshData()">🔄 Refresh Data</button>
+            <button class="btn logout" onclick="handleLogout()">🚪 Keluar</button>
+        </div>
+
+        <!-- Key Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-value">12,847</div>
+                <div class="stat-label">Total Pengunjung</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-value">+24.5%</div>
+                <div class="stat-label">Pertumbuhan Bulan Ini</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">⏱️</div>
+                <div class="stat-value">3m 42s</div>
+                <div class="stat-label">Rata-rata Durasi Kunjungan</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📸</div>
+                <div class="stat-value">47,203</div>
+                <div class="stat-label">Total Photo Views</div>
+            </div>
+        </div>
+
+        <!-- Visitor Trend Chart -->
+        <div class="chart-section">
+            <h2 class="section-title">📊 Tren Pengunjung (30 Hari Terakhir)</h2>
+            <div class="chart-bars">
+                <div class="bar" style="height: 65%;"></div>
+                <div class="bar" style="height: 72%;"></div>
+                <div class="bar" style="height: 58%;"></div>
+                <div class="bar" style="height: 85%;"></div>
+                <div class="bar" style="height: 70%;"></div>
+                <div class="bar" style="height: 90%;"></div>
+                <div class="bar" style="height: 75%;"></div>
+                <div class="bar" style="height: 88%;"></div>
+                <div class="bar" style="height: 82%;"></div>
+                <div class="bar" style="height: 95%;"></div>
+            </div>
+            <p style="text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
+                Pertumbuhan konsisten dengan puncak di hari ke-10 dan ke-30
+            </p>
+        </div>
+
+        <!-- Page Performance -->
+        <div class="table-section">
+            <h2 class="section-title">🔗 Performa Halaman</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Halaman</th>
+                        <th>Views</th>
+                        <th>Bounce Rate</th>
+                        <th>Avg. Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>/ (Gallery)</td>
+                        <td>8,234</td>
+                        <td>12.3%</td>
+                        <td>4m 15s</td>
+                    </tr>
+                    <tr>
+                        <td>/featured.html</td>
+                        <td>3,156</td>
+                        <td>18.5%</td>
+                        <td>2m 48s</td>
+                    </tr>
+                    <tr>
+                        <td>/stories.html</td>
+                        <td>2,847</td>
+                        <td>22.1%</td>
+                        <td>2m 12s</td>
+                    </tr>
+                    <tr>
+                        <td>/collections.html</td>
+                        <td>2,156</td>
+                        <td>16.7%</td>
+                        <td>3m 31s</td>
+                    </tr>
+                    <tr>
+                        <td>/services.html</td>
+                        <td>1,847</td>
+                        <td>24.3%</td>
+                        <td>1m 52s</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Popular Photos -->
+        <div class="table-section">
+            <h2 class="section-title">🌟 Foto Paling Populer</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Koleksi</th>
+                        <th>Views</th>
+                        <th>Share</th>
+                        <th>Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Urban Landscape - Sunset Over City</td>
+                        <td>1,234</td>
+                        <td>89</td>
+                        <td>⭐ 4.8</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Sunrise Series - Golden Hour</td>
+                        <td>1,156</td>
+                        <td>76</td>
+                        <td>⭐ 4.9</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Nature Portrait - Botanical Study</td>
+                        <td>987</td>
+                        <td>54</td>
+                        <td>⭐ 4.7</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Water Reflections - Mirror Lake</td>
+                        <td>845</td>
+                        <td>62</td>
+                        <td>⭐ 4.6</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Night Photography - City Lights</td>
+                        <td>764</td>
+                        <td>48</td>
+                        <td>⭐ 4.5</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="last-update">
+            <p>📅 Last Updated: <span id="updateTime">--:--</span></p>
+        </div>
+
+        <div class="footer-link">
+            <p>© 2026 StickNext Rail Saga - Dashboard Analitik</p>
+            <a href="index.html">← Kembali ke Galeri Utama</a>
+        </div>
+    </div>
+
+    <script>
+        // Session integrity check every 5 seconds
+        setInterval(function() {
+            if (!adminStorage.isHiddenPageUnlocked('analytics')) {
+                console.log('⚠️ Analytics session expired! Redirecting...');
+                window.location.href = 'unlock-analytics.html';
+            }
+        }, 5000);
+
+        // Update time on load
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('updateTime').textContent = now.toLocaleTimeString('id-ID');
+        }
+
+        updateTime();
+        setInterval(updateTime, 60000); // Update every minute
+
+        function refreshData() {
+            // Simulate data refresh
+            const originalText = event.target.textContent;
+            event.target.textContent = '⏳ Loading...';
+            
+            setTimeout(() => {
+                event.target.textContent = originalText;
+                updateTime();
+                alert('✓ Data refreshed successfully');
+            }, 1500);
+        }
+
+        function exportAnalytics() {
+            const analyticsData = {
+                timestamp: new Date().toISOString(),
+                totalVisitors: 12847,
+                growthRate: '24.5%',
+                averageSessionDuration: '3m 42s',
+                photoViews: 47203,
+                topPages: [
+                    { name: 'Gallery', views: 8234 },
+                    { name: 'Featured', views: 3156 },
+                    { name: 'Stories', views: 2847 }
+                ]
+            };
+
+            const dataStr = JSON.stringify(analyticsData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `Analytics_${new Date().getTime()}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+
+            console.log('✓ Analytics data exported');
+        }
+
+        function handleLogout() {
+            if (confirm('Keluar dari dashboard analitik?')) {
+                adminStorage.clearHiddenPageSession('analytics');
+                sessionStorage.clear();
+                localStorage.removeItem('sticknext_analytics_unlocked');
+                console.log('✓ Analytics logout: Session cleared');
+                window.location.href = 'unlock-analytics.html';
+            }
+        }
+    </script>
+</body>
+</html>

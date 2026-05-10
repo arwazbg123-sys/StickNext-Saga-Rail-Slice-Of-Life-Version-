@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri Premium - StickNext Rail Saga</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --premium-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --premium-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        body {
+            background: var(--primary-bg);
+        }
+
+        .premium-header {
+            background: var(--premium-gradient);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: var(--premium-shadow);
+        }
+
+        .premium-header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .premium-header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .premium-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .gallery-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            aspect-ratio: 4 / 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 3rem;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .gallery-item-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--premium-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            color: white;
+        }
+
+        .gallery-item:hover .gallery-item-overlay {
+            opacity: 0.9;
+        }
+
+        .overlay-text {
+            text-align: center;
+        }
+
+        .overlay-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .overlay-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .overlay-desc {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background: var(--primary-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background: var(--premium-gradient);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        .btn.logout {
+            background: #ff6b6b;
+            border-color: #ff6b6b;
+            color: white;
+        }
+
+        .btn.logout:hover {
+            background: #ee5a52;
+            border-color: #ee5a52;
+        }
+
+        .premium-section {
+            background: var(--secondary-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .feature-list li {
+            padding: 10px 0;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .feature-list li:before {
+            content: "✨ ";
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .footer-link {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link a:hover {
+            color: #764ba2;
+        }
+
+        @media (max-width: 768px) {
+            .premium-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .controls {
+                gap: 8px;
+            }
+
+            .btn {
+                padding: 8px 15px;
+                font-size: 0.85rem;
+            }
+
+            .premium-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SECURITY CHECK -->
+    <script src="admin.js"></script>
+    <script>
+        const adminStorage = new AdminStorage();
+        
+        // Clear session every time page loads
+        if (!adminStorage.isHiddenPageUnlocked('gallery')) {
+            console.log('❌ Gallery session invalid! Redirecting to unlock...');
+            window.location.href = 'unlock-gallery.html';
+        }
+
+        console.log('✅ Gallery premium page loaded with valid session');
+    </script>
+
+    <div class="premium-header">
+        <div class="premium-badge">🖼️ KOLEKSI EKSKLUSIF</div>
+        <h1>Galeri Premium</h1>
+        <p>Koleksi Foto Pilihan dengan Editing Profesional</p>
+    </div>
+
+    <div class="gallery-container">
+        <div class="controls">
+            <button class="btn" onclick="downloadCatalog()">📥 Download Katalog</button>
+            <button class="btn" onclick="shareGallery()">📤 Bagikan</button>
+            <button class="btn logout" onclick="handleLogout()">🚪 Keluar</button>
+        </div>
+
+        <div class="premium-section">
+            <h2 class="section-title">📸 Galeri Pilihan Premium</h2>
+            <p class="section-desc">Koleksi fotografi terpilih yang telah melalui proses seleksi ketat dan editing profesional untuk menghadirkan visual terbaik.</p>
+            
+            <div class="gallery-grid">
+                <!-- Photo placeholders with emojis -->
+                <div class="gallery-item" onclick="viewPhoto(1)">
+                    <div class="gallery-item-overlay">
+                        <div class="overlay-text">
+                            <div class="overlay-icon">🌅</div>
+                            <div class="overlay-title">Sunrise Series</div>
+                            <div class="overlay-desc">Premium collection</div>
+                        </div>
+                    </div>
+                    🌅
+                </div>
+
+                <div class="gallery-item" onclick="viewPhoto(2)">
+                    <div class="gallery-item-overlay">
+                        <div class="overlay-text">
+                            <div class="overlay-icon">🏙️</div>
+                            <div class="overlay-title">Urban Landscape</div>
+                            <div class="overlay-desc">City photography</div>
+                        </div>
+                    </div>
+                    🏙️
+                </div>
+
+                <div class="gallery-item" onclick="viewPhoto(3)">
+                    <div class="gallery-item-overlay">
+                        <div class="overlay-text">
+                            <div class="overlay-icon">🌊</div>
+                            <div class="overlay-title">Water Reflections</div>
+                            <div class="overlay-desc">Nature's mirror</div>
+                        </div>
+                    </div>
+                    🌊
+                </div>
+
+                <div class="gallery-item" onclick="viewPhoto(4)">
+                    <div class="gallery-item-overlay">
+                        <div class="overlay-text">
+                            <div class="overlay-icon">🌿</div>
+                            <div class="overlay-title">Nature Portrait</div>
+                            <div class="overlay-desc">Botanical study</div>
+                        </div>
+                    </div>
+                    🌿
+                </div>
+
+                <div class="gallery-item" onclick="viewPhoto(5)">
+                    <div class="gallery-item-overlay">
+                        <div class="overlay-text">
+                            <div class="overlay-icon">🌙</div>
+                            <div class="overlay-title">Night Photography</div>
+                            <div class="overlay-desc">After dark</div>
+                        </div>
+                    </div>
+                    🌙
+                </div>
+
+                <div class="gallery-item" onclick="viewPhoto(6)">
+                    <div class="gallery-item-overlay">
+                        <div class="overlay-text">
+                            <div class="overlay-icon">👥</div>
+                            <div class="overlay-title">Portrait Series</div>
+                            <div class="overlay-desc">Human stories</div>
+                        </div>
+                    </div>
+                    👥
+                </div>
+            </div>
+        </div>
+
+        <div class="premium-section">
+            <h2 class="section-title">✨ Fitur Premium</h2>
+            <ul class="feature-list">
+                <li>Akses ke koleksi eksklusif tidak tersedia untuk publik</li>
+                <li>Foto dalam resolusi tinggi dengan kualitas profesional</li>
+                <li>Behind-the-scenes content dan story fotografi</li>
+                <li>Download katalog lengkap dalam format PDF</li>
+                <li>Opsi kustomisasi dan permintaan khusus</li>
+            </ul>
+        </div>
+
+        <div class="footer-link">
+            <p>© 2026 StickNext Rail Saga - Galeri Premium</p>
+            <a href="index.html">← Kembali ke Galeri Utama</a>
+        </div>
+    </div>
+
+    <script>
+        // Session integrity check every 5 seconds
+        setInterval(function() {
+            if (!adminStorage.isHiddenPageUnlocked('gallery')) {
+                console.log('⚠️ Gallery session expired! Redirecting...');
+                window.location.href = 'unlock-gallery.html';
+            }
+        }, 5000);
+
+        function viewPhoto(id) {
+            alert(`👁️ Viewing Premium Photo #${id}\n\nFitur preview akan hadir segera.`);
+        }
+
+        function downloadCatalog() {
+            const catalogData = {
+                title: 'Galeri Premium - StickNext Rail Saga',
+                date: new Date().toLocaleDateString('id-ID'),
+                collections: [
+                    { name: 'Sunrise Series', photos: 12 },
+                    { name: 'Urban Landscape', photos: 15 },
+                    { name: 'Water Reflections', photos: 10 },
+                    { name: 'Nature Portrait', photos: 18 },
+                    { name: 'Night Photography', photos: 8 },
+                    { name: 'Portrait Series', photos: 14 }
+                ]
+            };
+
+            const dataStr = JSON.stringify(catalogData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `Galeri_Premium_${new Date().getTime()}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+
+            console.log('✓ Katalog diunduh');
+        }
+
+        function shareGallery() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Galeri Premium - StickNext Rail Saga',
+                    text: 'Koleksi fotografi eksklusif dan premium'
+                }).catch(err => console.log('Share canceled'));
+            } else {
+                alert('📤 Share: Bagikan halaman ini ke orang lain!');
+            }
+        }
+
+        function handleLogout() {
+            if (confirm('Keluar dari galeri premium?')) {
+                adminStorage.clearHiddenPageSession('gallery');
+                sessionStorage.clear();
+                localStorage.removeItem('sticknext_gallery_unlocked');
+                console.log('✓ Gallery logout: Session cleared');
+                window.location.href = 'unlock-gallery.html';
+            }
+        }
+    </script>
+</body>
+</html>

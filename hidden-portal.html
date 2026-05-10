@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Rahasia - StickNext Rail Saga</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --secret-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secret-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            background: var(--primary-bg);
+            overflow-x: hidden;
+        }
+
+        .secret-header {
+            background: var(--secret-gradient);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: var(--secret-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .secret-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            animation: float 15s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .secret-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .secret-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .secret-header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .access-code-display {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 25px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .secret-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .portal-card {
+            background: var(--secondary-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .portal-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            border-color: var(--text-primary);
+        }
+
+        .portal-header {
+            padding: 30px 25px;
+            background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 100%);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .portal-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .portal-title {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .portal-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .portal-body {
+            padding: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .portal-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+
+        .code-display {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .code-label {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .code-value {
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #667eea;
+            flex: 1;
+        }
+
+        .copy-btn {
+            background: rgba(102, 126, 234, 0.2);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #667eea;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .copy-btn:hover {
+            background: rgba(102, 126, 234, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .access-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            width: 100%;
+        }
+
+        .access-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .access-btn:active {
+            transform: translateY(0);
+        }
+
+        .security-info {
+            background: var(--secondary-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .info-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            background: rgba(102, 126, 234, 0.05);
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        .info-item-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .info-item-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .footer-link {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link a:hover {
+            color: #764ba2;
+        }
+
+        .easter-egg {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .easter-egg:hover {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 768px) {
+            .secret-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .secret-icon {
+                font-size: 3rem;
+            }
+
+            .portal-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .code-display {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .copy-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script src="admin.js"></script>
+
+    <div class="secret-header">
+        <div class="header-content">
+            <div class="secret-icon">🔐</div>
+            <h1>Portal Rahasia</h1>
+            <p>Akses Konten & Fitur Eksklusif</p>
+            <div class="access-code-display">🗝️ Gunakan Service Code untuk membuka akses</div>
+        </div>
+    </div>
+
+    <div class="secret-container">
+        <div class="portal-grid">
+            <!-- Admin Panel Card -->
+            <div class="portal-card">
+                <div class="portal-header">
+                    <div class="portal-icon">⚙️</div>
+                    <h2 class="portal-title">Panel Admin</h2>
+                    <p class="portal-subtitle">Manajemen Pesan & Pengaturan</p>
+                </div>
+                <div class="portal-body">
+                    <p class="portal-description">
+                        Kelola pesan masuk dari pengunjung, lihat statistik, ubah pengaturan admin panel, dan atur keamanan sistem.
+                    </p>
+                    <div class="code-display">
+                        <div style="flex: 1;">
+                            <div class="code-label">Akses:</div>
+                            <div class="code-value">Direct Access</div>
+                        </div>
+                    </div>
+                    <a href="admin.html" style="text-decoration: none;">
+                        <button class="access-btn">Buka Panel Admin →</button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Gallery Premium Card -->
+            <div class="portal-card">
+                <div class="portal-header">
+                    <div class="portal-icon">🖼️</div>
+                    <h2 class="portal-title">Galeri Premium</h2>
+                    <p class="portal-subtitle">Koleksi Eksklusif</p>
+                </div>
+                <div class="portal-body">
+                    <p class="portal-description">
+                        Koleksi fotografi pilihan dengan editing profesional dan resolusi tinggi. Akses ke foto-foto yang tidak tersedia di galeri publik.
+                    </p>
+                    <div class="code-display">
+                        <div style="flex: 1;">
+                            <div class="code-label">Code:</div>
+                            <div class="code-value">GalleryX84R</div>
+                        </div>
+                        <button class="copy-btn" onclick="copyToClipboard('GalleryX84R')">📋 Salin</button>
+                    </div>
+                    <a href="unlock-gallery.html" style="text-decoration: none;">
+                        <button class="access-btn">Buka Galeri Premium →</button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Exclusive Stories Card -->
+            <div class="portal-card">
+                <div class="portal-header">
+                    <div class="portal-icon">💎</div>
+                    <h2 class="portal-title">Konten Eksklusif</h2>
+                    <p class="portal-subtitle">Behind-the-Scenes & Cerita</p>
+                </div>
+                <div class="portal-body">
+                    <p class="portal-description">
+                        Behind-the-scenes dari proses fotografi, cerita pribadi, tips dan trik photography profesional untuk members setia.
+                    </p>
+                    <div class="code-display">
+                        <div style="flex: 1;">
+                            <div class="code-label">Code:</div>
+                            <div class="code-value">ExclusiveX2026</div>
+                        </div>
+                        <button class="copy-btn" onclick="copyToClipboard('ExclusiveX2026')">📋 Salin</button>
+                    </div>
+                    <a href="unlock-exclusive.html" style="text-decoration: none;">
+                        <button class="access-btn">Buka Konten Eksklusif →</button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Analytics Card -->
+            <div class="portal-card">
+                <div class="portal-header">
+                    <div class="portal-icon">📊</div>
+                    <h2 class="portal-title">Dashboard Analitik</h2>
+                    <p class="portal-subtitle">Statistik & Performa</p>
+                </div>
+                <div class="portal-body">
+                    <p class="portal-description">
+                        Real-time monitoring dan analisis pengunjung website. Laporan performa koleksi foto dan statistik pengunjung komprehensif.
+                    </p>
+                    <div class="code-display">
+                        <div style="flex: 1;">
+                            <div class="code-label">Code:</div>
+                            <div class="code-value">StatsX84R</div>
+                        </div>
+                        <button class="copy-btn" onclick="copyToClipboard('StatsX84R')">📋 Salin</button>
+                    </div>
+                    <a href="unlock-analytics.html" style="text-decoration: none;">
+                        <button class="access-btn">Buka Dashboard Analitik →</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Information -->
+        <div class="security-info">
+            <h2 class="info-title">🔒 Informasi Keamanan</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-item-title">✅ Sistem Multi-Layer</div>
+                    <div class="info-item-text">
+                        Setiap halaman dilindungi dengan service code unik dan session management yang ketat.
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-item-title">🔐 Session Protection</div>
+                    <div class="info-item-text">
+                        Setiap akses memerlukan verifikasi service code. Session otomatis hilang saat browser ditutup.
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-item-title">⏱️ Session Timestamp</div>
+                    <div class="info-item-text">
+                        Timestamp-based verification mencegah tampering dan unauthorized access.
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-item-title">🚪 Auto Redirect</div>
+                    <div class="info-item-text">
+                        Akses langsung tanpa service code akan automatic redirect ke halaman unlock.
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-item-title">📋 Audit Log</div>
+                    <div class="info-item-text">
+                        Semua akses dicatat di console browser untuk debugging dan monitoring.
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-item-title">🔄 Integrity Check</div>
+                    <div class="info-item-text">
+                        Setiap 5 detik ada verifikasi untuk memastikan session masih valid.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-link">
+            <p>© 2026 StickNext Rail Saga - Portal Keamanan</p>
+            <a href="index.html">← Kembali ke Galeri Utama</a>
+        </div>
+    </div>
+
+    <div class="easter-egg" onclick="easterEgg()">🎉</div>
+
+    <script>
+        // Check admin codes
+        console.log('%c🔐 HIDDEN PORTAL', 'color: #667eea; font-size: 16px; font-weight: bold;');
+        console.log('%cAvailable Service Codes:', 'color: #764ba2; font-weight: bold;');
+        const adminStorage = new AdminStorage();
+        const codes = adminStorage.getHiddenPagesCodes();
+        Object.entries(codes).forEach(([key, value]) => {
+            console.log(`  ${key.toUpperCase()}: ${value}`);
+        });
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✓ Service code disalin ke clipboard!');
+            }).catch(() => {
+                console.log('Kode:', text);
+                alert('Service code: ' + text);
+            });
+        }
+
+        function easterEgg() {
+            const messages = [
+                '🎉 Easter Egg ditemukan!',
+                '🔐 Portal rahasia ini hanya untuk yang berani!',
+                '✨ Setiap detail dirancang dengan penuh dedikasi',
+                '🚀 Terima kasih telah mengeksplorasi website kami!',
+                '💪 Sistem keamanan berlapis untuk perlindungan maksimal'
+            ];
+            const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+            alert(randomMsg);
+            confetti();
+        }
+
+        // Simple confetti animation
+        function confetti() {
+            const canvas = document.createElement('canvas');
+            canvas.style.position = 'fixed';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            canvas.style.pointerEvents = 'none';
+            canvas.style.zIndex = '1000';
+            document.body.appendChild(canvas);
+
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            for (let i = 0; i < 50; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    size: Math.random() * 5 + 2,
+                    speedX: (Math.random() - 0.5) * 8,
+                    speedY: Math.random() * 5 + 2,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`
+                });
+            }
+
+            const animate = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                particles.forEach((p, index) => {
+                    p.y += p.speedY;
+                    p.x += p.speedX;
+
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    if (p.y > canvas.height) {
+                        particles.splice(index, 1);
+                    }
+                });
+
+                if (particles.length > 0) {
+                    requestAnimationFrame(animate);
+                } else {
+                    canvas.remove();
+                }
+            };
+
+            animate();
+        }
+    </script>
+</body>
+</html>

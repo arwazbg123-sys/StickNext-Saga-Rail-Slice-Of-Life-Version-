@@ -201,6 +201,17 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="phone">Nomor Telepon *</label>
+                        <input 
+                            type="tel" 
+                            id="phone" 
+                            name="phone" 
+                            required
+                            placeholder="081234567890"
+                        >
+                    </div>
+
+                    <div class="form-group">
                         <label for="subject">Subjek *</label>
                         <input 
                             type="text" 
@@ -250,21 +261,35 @@
         function handleFormSubmit(event) {
             event.preventDefault();
             
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const subject = document.getElementById('subject').value;
-            const message = document.getElementById('message').value;
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value,
+                timestamp: new Date().toISOString(),
+                id: Date.now()
+            };
 
-            // Create mailto link
-            const mailtoLink = `mailto:contact@sticknextrailsaga.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Nama: ${name}\nEmail: ${email}\n\n${message}`)}`;
-            
-            window.location.href = mailtoLink;
-            
-            // Reset form
-            document.querySelector('.contact-form').reset();
-            alert('Terima kasih! Pesan Anda akan dikirim melalui email Anda.');
+            try {
+                // Save to localStorage via admin module
+                if (typeof AdminStorage !== 'undefined') {
+                    const adminStorage = new AdminStorage();
+                    adminStorage.addMessage(formData);
+                }
+                
+                // Show success message
+                alert('✓ Pesan berhasil dikirim! Kami akan segera menghubungi Anda.');
+                
+                // Reset form
+                document.querySelector('.contact-form').reset();
+            } catch (error) {
+                alert('✗ Terjadi kesalahan. Silakan coba lagi.');
+                console.error('Error saving message:', error);
+            }
         }
     </script>
+    <script src="admin.js"></script>
     <script src="settings.js"></script>
 </body>
 </html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Verification</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        .unlock-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+        }
+
+        .unlock-box {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .unlock-logo {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .unlock-title {
+            text-align: center;
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .unlock-subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.875rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.875rem;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(76, 175, 80, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            animation: shake 0.4s ease-in-out;
+            display: none;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .info-box {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+        }
+
+        .info-box strong {
+            color: #4CAF50;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .back-link a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-link a:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 480px) {
+            .unlock-box {
+                padding: 2rem;
+                border-radius: 8px;
+            }
+
+            .unlock-title {
+                font-size: 1.3rem;
+            }
+
+            .unlock-logo {
+                font-size: 2.5rem;
+            }
+
+            .form-group input {
+                padding: 0.75rem;
+            }
+
+            .submit-btn {
+                padding: 0.75rem;
+                font-size: 0.95rem;
+            }
+
+            .info-box {
+                font-size: 0.8rem;
+                padding: 0.75rem;
+            }
+        }
+
+        /* Tablet Optimization */
+        @media (max-width: 768px) and (min-width: 481px) {
+            .unlock-box {
+                max-width: 380px;
+            }
+        }
+
+        /* Loading State */
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Prevent text selection for security feel */
+        .unlock-title, .unlock-subtitle {
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="unlock-container">
+        <div class="unlock-box">
+            <div class="unlock-logo">🔓</div>
+            <h1 class="unlock-title">Access Verification</h1>
+            <p class="unlock-subtitle">Masukkan service code untuk melanjutkan</p>
+
+            <form id="unlockForm" onsubmit="handleUnlock(event)">
+                <div class="form-group">
+                    <label for="serviceCode">Service Code</label>
+                    <input 
+                        type="text" 
+                        id="serviceCode" 
+                        placeholder="Masukkan service code" 
+                        autocomplete="off"
+                        autofocus
+                    >
+                </div>
+                <button type="submit" class="submit-btn">Verifikasi</button>
+            </form>
+
+            <div class="error-message" id="errorMessage"></div>
+
+            <div class="info-box">
+                <strong>💡 Catatan Keamanan:</strong> 
+                <br>• Halaman ini tersembunyi dari navigasi umum
+                <br>• Akses ke portal rahasia dengan berbagai pilihan konten
+                <br>• Session akan hilang saat browser ditutup
+                <br>• Tidak ada shortcut atau bypass
+                <br><br>
+                <strong>🚀 Versi Enhanced:</strong>
+                <br><a href="unlock-enhanced.html" style="color: #4CAF50; text-decoration: none; font-weight: 600;">
+                    Coba 3-Layer Security Challenge (Puzzle + Password)
+                </a>
+                <br><br>
+                <button onclick="clearLocalStorage()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; margin-top: 0.5rem; font-size: 0.8rem;">
+                    🔄 Clear Cache (Debug Only)
+                </button>
+            </div>
+
+            <div class="back-link">
+                <a href="index.html">← Kembali ke Gallery</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+    <script>
+        // PENTING: Clear session setiap kali halaman unlock dibuka
+        // Ini memastikan user harus input service code setiap kali
+        sessionStorage.removeItem('sticknext_admin_unlocked');
+        console.log('✓ Session cleared on unlock.html load');
+
+        const adminStorage = new AdminStorage();
+
+        function handleUnlock(event) {
+            event.preventDefault();
+
+            const code = document.getElementById('serviceCode').value.trim();
+            const errorDiv = document.getElementById('errorMessage');
+
+            console.log('🔍 Service code entered:', code);
+            console.log('🔍 Current settings:', adminStorage.getAdminSettings());
+
+            if (!code) {
+                showError('Silakan masukkan service code');
+                return;
+            }
+
+            if (adminStorage.verifyServiceCode(code)) {
+                console.log('✅ Service code VALID');
+                // Set session as unlocked
+                adminStorage.setSessionUnlocked();
+                
+                // Show success message
+                showSuccess('✅ Verifikasi berhasil! Membuka portal rahasia...');
+                
+                // Redirect after 1 second
+                setTimeout(() => {
+                    window.location.href = 'hidden-portal.html';
+                }, 1000);
+            } else {
+                console.log('❌ Service code INVALID');
+                console.log('Expected:', adminStorage.getAdminSettings().serviceCode);
+                console.log('Received:', code);
+                showError('❌ Service code tidak valid');
+                document.getElementById('serviceCode').value = '';
+                document.getElementById('serviceCode').focus();
+                shakeAnimation();
+            }
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 4000);
+        }
+
+        function showSuccess(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.color = '#4CAF50';
+            errorDiv.classList.add('show');
+        }
+
+        function shakeAnimation() {
+            const form = document.getElementById('unlockForm');
+            form.style.animation = 'none';
+            setTimeout(() => {
+                form.style.animation = 'shake 0.4s ease-in-out';
+            }, 10);
+        }
+
+        // Clear localStorage (for debugging)
+        function clearLocalStorage() {
+            if (confirm('Hapus semua data dari browser cache? (Untuk debugging)')) {
+                localStorage.clear();
+                sessionStorage.clear();
+                alert('✓ Cache dibersihkan. Halaman akan di-refresh...');
+                location.reload();
+            }
+        }
+
+        // Enter key to submit
+        document.getElementById('serviceCode').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('unlockForm').dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // Check if already unlocked
+        if (adminStorage.isSessionUnlocked()) {
+            console.log('✓ Session already unlocked, redirecting to admin...');
+            window.location.href = 'admin.html';
+        }
+
+        // Debug: Show current credentials in console
+        console.log('═══════════════════════════════════════');
+        console.log('🔐 ADMIN PANEL DEBUG INFO');
+        console.log('═══════════════════════════════════════');
+        const debugSettings = adminStorage.getAdminSettings();
+        console.log('Service Code:', debugSettings.serviceCode);
+        console.log('Password:', '***' + debugSettings.password.slice(-4));
+        console.log('Full Settings:', debugSettings);
+        console.log('localStorage.sticknext_admin_settings:', localStorage.getItem('sticknext_admin_settings'));
+        console.log('═══════════════════════════════════════');
+    </script>
+</body>
+</html>

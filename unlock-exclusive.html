@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akses Konten Eksklusif - StickNext Rail Saga</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .unlock-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            autocomplete: off;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 87, 108, 0.6);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        #errorMessage {
+            color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 0.9rem;
+            animation: shake 0.5s;
+        }
+
+        #errorMessage.show {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85rem;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: white;
+        }
+
+        @media (max-width: 480px) {
+            .unlock-container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 1.3rem;
+            }
+
+            .icon {
+                font-size: 2.5rem;
+            }
+
+            input[type="text"] {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="unlock-container">
+        <div class="header">
+            <div class="icon">💎</div>
+            <h1>Konten Eksklusif</h1>
+            <p class="subtitle">Behind-the-Scenes & Cerita Pribadi</p>
+        </div>
+
+        <div id="errorMessage"></div>
+
+        <form onsubmit="handleUnlock(event)">
+            <div class="form-group">
+                <label for="code">Service Code:</label>
+                <input 
+                    type="text" 
+                    id="code" 
+                    placeholder="Masukkan service code..." 
+                    autocomplete="off"
+                    required
+                >
+            </div>
+
+            <button type="submit">Buka Akses</button>
+        </form>
+
+        <div class="info-box">
+            <strong>💡 Konten Eksklusif:</strong>
+            <br>• Behind-the-scenes dari proses fotografi
+            <br>• Cerita pribadi di balik setiap koleksi
+            <br>• Tips dan trik photography profesional
+            <br>• Akses terbatas untuk members setia
+        </div>
+
+        <a href="index.html" class="back-link">← Kembali ke Halaman Utama</a>
+    </div>
+
+    <script src="admin.js"></script>
+    <script>
+        // Clear session setiap kali halaman unlock dibuka
+        sessionStorage.removeItem('sticknext_exclusive_unlocked');
+        sessionStorage.removeItem('sticknext_exclusive_unlock_time');
+        console.log('✓ Exclusive session cleared on unlock-exclusive.html load');
+
+        const adminStorage = new AdminStorage();
+
+        function handleUnlock(event) {
+            event.preventDefault();
+            const code = document.getElementById('code').value.trim();
+
+            if (adminStorage.verifyHiddenPageCode('exclusive', code)) {
+                console.log('✅ Exclusive code VALID');
+                // Set session as unlocked
+                adminStorage.setHiddenPageSession('exclusive');
+
+                // Show success message
+                showSuccess('✅ Verifikasi berhasil! Membuka konten eksklusif...');
+
+                // Redirect after 1 second
+                setTimeout(() => {
+                    window.location.href = 'exclusive-stories.html';
+                }, 1000);
+            } else {
+                console.log('❌ Exclusive code INVALID');
+                showError('❌ Service code salah! Coba lagi.');
+                document.getElementById('code').value = '';
+                document.getElementById('code').focus();
+            }
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.color = '#ff6b6b';
+            errorDiv.classList.add('show');
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 4000);
+        }
+
+        function showSuccess(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.color = '#4CAF50';
+            errorDiv.classList.add('show');
+        }
+
+        // Keyboard shortcut
+        document.getElementById('code').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleUnlock(e);
+            }
+        });
+
+        // Focus on input
+        document.getElementById('code').focus();
+
+        // Console info
+        console.log('%c💎 KONTEN EKSKLUSIF UNLOCK PAGE', 'color: #f5576c; font-size: 14px; font-weight: bold;');
+        console.log('Available codes:', adminStorage.getHiddenPagesCodes());
+    </script>
+</body>
+</html>
