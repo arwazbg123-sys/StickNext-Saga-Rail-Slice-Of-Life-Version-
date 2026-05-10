@@ -57,7 +57,7 @@
         .message-badge.read { background: var(--border-color); }
         
         .message-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
-        .info-field { }
+        .info-field { background: var(--primary-bg); padding: 0.75rem; border-radius: 4px; border: 1px solid var(--border-color); }
         .info-label { color: var(--text-secondary); font-size: 0.85rem; }
         .info-value { color: var(--text-primary); font-weight: 500; word-break: break-all; }
         
@@ -191,6 +191,7 @@
 
     <script src="admin.js"></script>
     <script src="settings.js"></script>
+    <script src="smart-protection.js"></script>
     <script>
         // ===== SECURITY CHECK =====
         // Redirect to unlock jika session tidak valid

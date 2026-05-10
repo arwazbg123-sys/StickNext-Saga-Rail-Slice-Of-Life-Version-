@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StickNext Beat - Sprunki Game</title>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --dark: #0a0e27;
+            --darker: #050710;
+            --text: #ffffff;
+            --text-dim: #b0b0b0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--darker);
+            color: var(--text);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .game-header {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .game-header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .game-header p {
+            margin: 0.3rem 0 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Main Game Container */
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 80px);
+            background: linear-gradient(180deg, #1a1a3e 0%, #0a0e27 100%);
+        }
+
+        /* Stage Area - 2D Game Stage */
+        .game-stage {
+            flex: 1;
+            position: relative;
+            background: linear-gradient(180deg, #00bfff 0%, #90ee90 50%, #228b22 100%);
+            overflow: hidden;
+            border-bottom: 4px solid #333;
+        }
+
+        /* Sky background */
+        .stage-sky {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(180deg, #00bfff 0%, #87ceeb 100%);
+        }
+
+        /* Cloud decorations */
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 100px;
+            opacity: 0.7;
+        }
+
+        .cloud1 {
+            width: 100px;
+            height: 40px;
+            top: 20px;
+            left: 10%;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        .cloud2 {
+            width: 120px;
+            height: 45px;
+            top: 60px;
+            right: 15%;
+            animation: float 8s infinite ease-in-out reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(20px); }
+        }
+
+        /* Stage ground */
+        .stage-ground {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            background: linear-gradient(180deg, rgba(34, 139, 34, 0.8) 0%, #1a5c1a 100%);
+        }
+
+        /* Character slots on stage */
+        .character-slots {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            padding: 0 40px;
+            height: 250px;
+            pointer-events: none;
+        }
+
+        /* Individual character slot */
+        .char-slot {
+            width: 80px;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            position: relative;
+            pointer-events: auto;
+        }
+
+        /* Character placeholder circle */
+        .char-circle {
+            width: 70px;
+            height: 70px;
+            background: rgba(102, 126, 234, 0.3);
+            border: 2px dashed rgba(102, 126, 234, 0.6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .char-slot.active .char-circle {
+            background: rgba(102, 126, 234, 0.8);
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(240, 147, 251, 0.4);
+            animation: bounce 0.5s ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Character name label */
+        .char-label {
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 5px;
+        }
+
+        /* Sound indicator wave */
+        .sound-wave {
+            position: absolute;
+            bottom: 80px;
+            width: 100%;
+            height: 30px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .char-slot.playing .sound-wave {
+            opacity: 1;
+        }
+
+        .wave-bar {
+            display: inline-block;
+            width: 2px;
+            height: 15px;
+            background: linear-gradient(180deg, var(--primary), var(--accent));
+            margin: 0 2px;
+            border-radius: 2px;
+            animation: wave 0.5s ease-in-out infinite;
+        }
+
+        .wave-bar:nth-child(2) { animation-delay: 0.1s; }
+        .wave-bar:nth-child(3) { animation-delay: 0.2s; }
+        .wave-bar:nth-child(4) { animation-delay: 0.3s; }
+        .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+
+        @keyframes wave {
+            0%, 100% { height: 10px; }
+            50% { height: 25px; }
+        }
+
+        /* Control Panel */
+        .game-controls {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 1.5rem;
+            border-top: 2px solid rgba(102, 126, 234, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .control-btn {
+            padding: 0.6rem 1.2rem;
+            border: 1px solid rgba(102, 126, 234, 0.5);
+            background: rgba(102, 126, 234, 0.1);
+            color: var(--text);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: rgba(102, 126, 234, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border: none;
+        }
+
+        .stop-btn {
+            background: rgba(244, 67, 54, 0.2);
+            border-color: #f44336;
+            color: #ff6b6b;
+        }
+
+        .clear-btn {
+            background: rgba(255, 152, 0, 0.2);
+            border-color: #FF9800;
+            color: #FFB74D;
+        }
+
+        .info-panel {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .info-label {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .info-value {
+            font-size: 1.2rem;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Character Cards Shelf */
+        .cards-shelf {
+            background: #000;
+            padding: 1rem;
+            min-height: 140px;
+            border-top: 1px solid rgba(102, 126, 234, 0.3);
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        .cards-container {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            min-width: 100%;
+            padding: 0.5rem;
+        }
+
+        /* Character Card */
+        .char-card {
+            width: 90px;
+            height: 110px;
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.2), rgba(102, 126, 234, 0.2));
+            border: 2px solid rgba(240, 147, 251, 0.5);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .char-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(240, 147, 251, 0.2);
+            border-color: var(--accent);
+        }
+
+        .char-card:active {
+            cursor: grabbing;
+        }
+
+        .char-card.dragging {
+            opacity: 0.5;
+        }
+
+        .char-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+            pointer-events: none;
+        }
+
+        .card-emoji {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-name {
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: var(--text);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            border: 1px solid var(--primary);
+            font-size: 0.95rem;
+            animation: slideUp 0.3s ease;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .game-header h1 {
+                font-size: 1.3rem;
+            }
+
+            .character-slots {
+                padding: 0 20px;
+            }
+
+            .char-slot {
+                width: 60px;
+                height: 150px;
+            }
+
+            .char-circle {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+
+            .game-controls {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .control-buttons {
+                width: 100%;
+                justify-content: space-around;
+            }
+
+            .info-panel {
+                width: 100%;
+                justify-content: space-around;
+            }
+
+            .char-card {
+                width: 70px;
+                height: 90px;
+            }
+
+            .card-emoji {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-header">
+        <h1>🎵 StickNext Beat</h1>
+        <p>Drag Karaktermu ke Stage & Ciptakan Musik Harmony!</p>
+    </div>
+
+    <div class="game-container">
+        <!-- Stage Area -->
+        <div class="game-stage">
+            <div class="stage-sky">
+                <div class="cloud cloud1"></div>
+                <div class="cloud cloud2"></div>
+            </div>
+            <div class="stage-ground"></div>
+
+            <!-- Character slots where characters appear -->
+            <div class="character-slots" id="characterSlots"></div>
+        </div>
+
+        <!-- Control Panel -->
+        <div class="game-controls">
+            <div class="control-buttons">
+                <button class="control-btn play-btn" id="playBtn">▶ Play</button>
+                <button class="control-btn" id="pauseBtn">⏸ Pause</button>
+                <button class="control-btn stop-btn" id="stopBtn">⏹ Stop</button>
+                <button class="control-btn clear-btn" id="clearBtn">🗑 Clear</button>
+            </div>
+
+            <div class="info-panel">
+                <div class="info-item">
+                    <span class="info-label">Aktif</span>
+                    <span class="info-value" id="activeCount">0/8</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Bermain</span>
+                    <span class="info-value" id="playingCount">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Character Cards Shelf -->
+        <div class="cards-shelf">
+            <div class="cards-container" id="cardsContainer"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="admin.js"></script>
+    <script src="beat-characters.js"></script>
+    <script src="beat-sounds.js"></script>
+    <script src="smart-protection.js"></script>
+    <script>
+        /**
+         * StickNext Beat - Sprunki-Style Game
+         * Drag & drop characters from shelf to stage
+         */
+
+        class SpunkiGame {
+            constructor() {
+                this.activeCharacters = new Map();
+                this.isPlaying = false;
+                this.draggedCard = null;
+                this.soundManager = window.beatSoundManager;
+                this.init();
+            }
+
+            init() {
+                this.createSlots();
+                this.createCards();
+                this.setupEventListeners();
+                console.log('✅ Sprunki Game Ready!');
+            }
+
+            createSlots() {
+                const slotsContainer = document.getElementById('characterSlots');
+                const characters = window.beatCharacterManager.getAllCharacters();
+
+                slotsContainer.innerHTML = characters.map((char, idx) => `
+                    <div class="char-slot" data-slot="${idx}">
+                        <div class="sound-wave">
+                            <div class="wave-bar"></div>
+                            <div class="wave-bar"></div>
+                            <div class="wave-bar"></div>
+                            <div class="wave-bar"></div>
+                            <div class="wave-bar"></div>
+                        </div>
+                        <div class="char-circle" data-slot="${idx}">
+                            <span class="slot-emoji">?</span>
+                        </div>
+                        <div class="char-label">${char.name}</div>
+                    </div>
+                `).join('');
+
+                document.querySelectorAll('.char-slot').forEach(slot => {
+                    slot.addEventListener('dragover', (e) => this.handleDragOver(e));
+                    slot.addEventListener('dragleave', (e) => this.handleDragLeave(e));
+                    slot.addEventListener('drop', (e) => this.handleDrop(e));
+                });
+            }
+
+            createCards() {
+                const container = document.getElementById('cardsContainer');
+                const characters = window.beatCharacterManager.getAllCharacters();
+
+                container.innerHTML = characters.map(char => `
+                    <div class="char-card" draggable="true" data-char-id="${char.id}">
+                        <div class="card-emoji">${char.emoji}</div>
+                        <div class="card-name">${char.name}</div>
+                    </div>
+                `).join('');
+
+                document.querySelectorAll('.char-card').forEach(card => {
+                    card.addEventListener('dragstart', (e) => this.handleCardDragStart(e));
+                    card.addEventListener('dragend', (e) => this.handleCardDragEnd(e));
+                });
+            }
+
+            handleCardDragStart(e) {
+                this.draggedCard = e.target.closest('.char-card');
+                this.draggedCard.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('characterId', this.draggedCard.dataset.charId);
+            }
+
+            handleCardDragEnd(e) {
+                if (this.draggedCard) {
+                    this.draggedCard.classList.remove('dragging');
+                    this.draggedCard = null;
+                }
+            }
+
+            handleDragOver(e) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                e.target.closest('.char-slot')?.classList.add('active');
+            }
+
+            handleDragLeave(e) {
+                e.target.closest('.char-slot')?.classList.remove('active');
+            }
+
+            handleDrop(e) {
+                e.preventDefault();
+                const slot = e.target.closest('.char-slot');
+                slot.classList.remove('active');
+
+                const characterId = e.dataTransfer.getData('characterId');
+                const slotIndex = parseInt(slot.dataset.slot);
+
+                if (characterId) {
+                    this.placeCharacter(slotIndex, characterId);
+                }
+            }
+
+            placeCharacter(slotIndex, characterId) {
+                this.activeCharacters.forEach((cId, idx) => {
+                    if (cId === characterId) {
+                        this.activeCharacters.delete(idx);
+                    }
+                });
+
+                this.activeCharacters.set(slotIndex, characterId);
+                
+                const slot = document.querySelector(`[data-slot="${slotIndex}"]`);
+                const character = window.beatCharacterManager.getCharacter(characterId);
+                
+                if (character && slot) {
+                    slot.classList.add('active');
+                    const emoji = slot.querySelector('.slot-emoji');
+                    emoji.textContent = character.emoji;
+
+                    this.soundManager.playCharacterSound(characterId);
+                    
+                    slot.classList.add('playing');
+                    setTimeout(() => slot.classList.remove('playing'), 400);
+                }
+
+                this.showNotification(`✓ ${character.name} ditambahkan!`);
+                this.updateUI();
+            }
+
+            playAll() {
+                if (this.activeCharacters.size === 0) {
+                    this.showNotification('❌ Drag karakter ke stage dulu!');
+                    return;
+                }
+
+                this.isPlaying = true;
+                this.activeCharacters.forEach((charId, slotIdx) => {
+                    this.soundManager.playCharacterSound(charId);
+                    const slot = document.querySelector(`[data-slot="${slotIdx}"]`);
+                    if (slot) {
+                        slot.classList.add('playing');
+                    }
+                });
+
+                this.showNotification('🎵 Musik dimainkan!');
+                
+                setTimeout(() => {
+                    document.querySelectorAll('.char-slot.playing').forEach(slot => {
+                        slot.classList.remove('playing');
+                    });
+                }, 400);
+
+                this.updateUI();
+            }
+
+            pauseAll() {
+                this.isPlaying = false;
+                this.soundManager.stopAllSounds();
+                document.querySelectorAll('.char-slot.playing').forEach(slot => {
+                    slot.classList.remove('playing');
+                });
+                this.showNotification('⏸ Musik dijeda');
+            }
+
+            stopAll() {
+                this.isPlaying = false;
+                this.soundManager.stopAllSounds();
+                document.querySelectorAll('.char-slot.playing').forEach(slot => {
+                    slot.classList.remove('playing');
+                });
+                this.showNotification('⏹ Musik dihentikan');
+            }
+
+            clearAll() {
+                this.activeCharacters.clear();
+                this.isPlaying = false;
+                this.soundManager.stopAllSounds();
+
+                document.querySelectorAll('.char-slot').forEach(slot => {
+                    slot.classList.remove('active', 'playing');
+                    slot.querySelector('.slot-emoji').textContent = '?';
+                });
+
+                this.showNotification('🗑 Stage dikosongkan');
+                this.updateUI();
+            }
+
+            updateUI() {
+                document.getElementById('activeCount').textContent = 
+                    `${this.activeCharacters.size}/8`;
+                document.getElementById('playingCount').textContent = 
+                    document.querySelectorAll('.char-slot.playing').length;
+            }
+
+            setupEventListeners() {
+                document.getElementById('playBtn').addEventListener('click', () => this.playAll());
+                document.getElementById('pauseBtn').addEventListener('click', () => this.pauseAll());
+                document.getElementById('stopBtn').addEventListener('click', () => this.stopAll());
+                document.getElementById('clearBtn').addEventListener('click', () => this.clearAll());
+            }
+
+            showNotification(message) {
+                const notif = document.createElement('div');
+                notif.className = 'notification';
+                notif.textContent = message;
+                document.body.appendChild(notif);
+
+                setTimeout(() => notif.remove(), 2500);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.spunkiGame = new SpunkiGame();
+        });
+    </script>
+</body>
+</html>
