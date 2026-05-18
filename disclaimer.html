@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Disclaimer - StickNext Rail Saga adalah koleksi fotografi fiksi untuk hiburan dan apresiasi artistik.">
+    <meta name="theme-color" content="#fafaf8">
+    <title>Disclaimer - StickNext Rail Saga</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .disclaimer-container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: calc(40px * var(--spacing-factor));
+            background: var(--secondary-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+            border-left: 5px solid #d32f2f;
+        }
+
+        .reading-progress {
+            position: sticky;
+            top: 0;
+            background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            z-index: 99;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .reading-status {
+            font-size: 0.95rem;
+            margin-top: 8px;
+        }
+
+        .reading-status.not-started {
+            color: #ffcdd2;
+        }
+
+        .reading-status.in-progress {
+            color: #fff9c4;
+        }
+
+        .reading-status.completed {
+            color: #c8e6c9;
+            font-weight: 700;
+        }
+
+        .disclaimer-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 30px;
+        }
+
+        .disclaimer-header h1 {
+            font-size: 2rem;
+            color: #d32f2f;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .disclaimer-header p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .warning-badge {
+            display: inline-block;
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+            padding: 10px 20px;
+            border-radius: 6px;
+            margin: 15px 0;
+            font-weight: 600;
+            color: #e65100;
+            font-size: 0.95rem;
+        }
+
+        .disclaimer-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .disclaimer-section {
+            padding: 20px;
+            background: #fafaf8;
+            border-radius: 8px;
+            border-left: 4px solid #1976d2;
+        }
+
+        .disclaimer-section h2 {
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .disclaimer-section h2::before {
+            content: "⚠️";
+            font-size: 1.5rem;
+        }
+
+        .disclaimer-section p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        .disclaimer-section ul {
+            list-style: none;
+            padding-left: 0;
+            color: var(--text-secondary);
+        }
+
+        .disclaimer-section li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.8;
+        }
+
+        .disclaimer-section li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        .important-box {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border: 3px solid #ff9800;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1.05rem;
+            color: #e65100;
+            font-weight: 500;
+            line-height: 1.8;
+        }
+
+        .artistic-note {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border: 2px solid #1976d2;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #0d47a1;
+            line-height: 1.8;
+        }
+
+        .artistic-note strong {
+            color: #1565c0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(25, 118, 210, 0.3);
+        }
+
+        .btn-primary:disabled,
+        .btn-primary.disabled {
+            background: linear-gradient(135deg, #ccc 0%, #aaa 100%);
+            cursor: not-allowed;
+            opacity: 0.5;
+            transform: none;
+        }
+
+        .btn-primary:disabled:hover,
+        .btn-primary.disabled:hover {
+            box-shadow: none;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: #ddd8cc;
+            transform: translateY(-2px);
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-tertiary);
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .disclaimer-container {
+                margin: 40px 20px;
+                padding: 30px 20px;
+                border-left-width: 4px;
+            }
+
+            .disclaimer-header h1 {
+                font-size: 1.6rem;
+            }
+
+            .disclaimer-section {
+                padding: 15px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* Quiz Styles */
+        .quiz-section {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            border: 3px solid #e91e63;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            display: none;
+        }
+
+        .quiz-section.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .quiz-section h3 {
+            color: #c2185b;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .quiz-question {
+            margin-bottom: 20px;
+        }
+
+        .quiz-question p {
+            color: #880e4f;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #e91e63;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-option:hover {
+            background: #fce4ec;
+            border-color: #c2185b;
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-right: 10px;
+            cursor: pointer;
+            accent-color: #e91e63;
+        }
+
+        .quiz-option label {
+            cursor: pointer;
+            flex: 1;
+            color: #880e4f;
+        }
+
+        .quiz-feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+            font-weight: 600;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+        }
+
+        .quiz-feedback.incorrect {
+            background: #ffebee;
+            color: #c62828;
+            border-left: 4px solid #d32f2f;
+        }
+
+        .quiz-feedback.correct {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-left: 4px solid #4caf50;
+        }
+
+        .submit-quiz-btn {
+            background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .submit-quiz-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(233, 30, 99, 0.3);
+        }
+
+        .submit-quiz-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .locked-message {
+            background: #ffebee;
+            border: 2px dashed #d32f2f;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: #c62828;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== HEADER ===== -->
+    <header>
+        <h1>STICKNEXT RAIL SAGA</h1>
+        <p>Slice of Life Photography</p>
+        <p class="photo-counter">Disclaimer & Pernyataan Penting</p>
+        <nav>
+            <a href="index.html">Gallery</a>
+            <a href="beat-game.html">🎵 Beat Game</a>
+            <a href="pages.html">Navigasi</a>
+            <a href="about.html">Tentang</a>
+            <a href="license.html">Lisensi</a>
+            <a href="contact.html">Kontak</a>
+        </nav>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main>
+        <div class="disclaimer-container">
+            <!-- Reading Progress Indicator -->
+            <div class="reading-progress" id="readingProgress">
+                <div class="reading-status not-started" id="readingStatus">
+                    📖 Mulai baca disclaimer ini dengan seksama...
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <div class="disclaimer-header">
+                <h1>⚠️ DISCLAIMER PENTING</h1>
+                <p>Mohon baca dengan seksama sebelum melanjutkan</p>
+            </div>
+
+            <div class="warning-badge">
+                🔴 HALAMAN INI WAJIB DIBACA SEBELUM MELIHAT KONTEN
+            </div>
+
+            <div class="disclaimer-content">
+                <!-- Section 1: Fiksi -->
+                <div class="disclaimer-section">
+                    <h2>Ini Adalah Karya Fiksi</h2>
+                    <p>
+                        <strong>StickNext Rail Saga</strong> adalah <strong>KARYA SENI FIKSI MURNI</strong> 
+                        yang dibuat untuk tujuan <strong>hiburan dan apresiasi artistik</strong> semata. 
+                        Seluruh konten, foto, dan narasi dalam situs ini adalah kreasi imajinasi dan 
+                        bukan dokumentasi kejadian nyata.
+                    </p>
+                    <p>
+                        Koleksi fotografi ini diproduksi untuk menampilkan <strong>kualitas visual dan 
+                        artistik</strong>, bukan untuk menjadi panduan atau contoh perilaku dalam kehidupan 
+                        sehari-hari.
+                    </p>
+                </div>
+
+                <!-- Section 2: Konten Sensitif -->
+                <div class="disclaimer-section">
+                    <h2>Konten yang Mungkin Disalahpahami</h2>
+                    <p>
+                        Beberapa foto dalam galeri ini menampilkan skenario yang mungkin terlihat berisiko, 
+                        seperti:
+                    </p>
+                    <ul>
+                        <li>Berdiri di dekat rel kereta api yang sempit</li>
+                        <li>Berada di lokasi yang dekat dengan lokomotif bergerak</li>
+                        <li>Pose atau aksi yang tampak berbahaya atau mendebarkan</li>
+                        <li>Situasi yang merupakan representasi simbolik ketangguhan dan keberanian</li>
+                    </ul>
+                    <p style="margin-top: 15px; font-weight: 600;">
+                        ⚠️ <strong>SEMUA AKSI INI HANYALAH SIMBOLIK</strong> dan tidak dimaksudkan untuk 
+                        ditiru atau diikuti dalam kehidupan nyata.
+                    </p>
+                </div>
+
+                <!-- Important Warning Box -->
+                <div class="important-box">
+                    🚫 JANGAN MENIRU AKSI DI FOTO INI DALAM KEHIDUPAN NYATA<br><br>
+                    Berada di rel kereta api, terutama di dekat lokomotif yang bergerak, adalah 
+                    <strong>SANGAT BERBAHAYA</strong> dan dapat menyebabkan cedera serius atau fatal. 
+                    Keselamatan Anda adalah prioritas utama kami.
+                </div>
+
+                <!-- Section 3: Tujuan Seni -->
+                <div class="disclaimer-section">
+                    <h2>Tujuan & Apresiasi Artistik</h2>
+                    <p>
+                        Konten dalam StickNext Rail Saga dirancang untuk:
+                    </p>
+                    <ul>
+                        <li>Menampilkan <strong>kualitas fotografi yang luar biasa</strong></li>
+                        <li>Mengapresiasi <strong>komposisi dan teknik visual</strong></li>
+                        <li>Menceritakan narasi artistik tentang <strong>ketangguhan dan dedikasi</strong> seorang petugas</li>
+                        <li>Menginspirasi melalui <strong>seni dan kreativitas</strong>, bukan melalui aksi berisiko</li>
+                        <li>Menunjukkan <strong>keindahan dalam pekerjaan sehari-hari</strong></li>
+                    </ul>
+                    <p style="margin-top: 15px;">
+                        Fokus apresiasi Anda <strong>harus pada kualitas artistik, komposisi, dan cerita</strong> — 
+                        bukan pada aksi atau tingkah laku dalam foto.
+                    </p>
+                </div>
+
+                <!-- Artistic Note -->
+                <div class="artistic-note">
+                    <strong>✨ Catatan Artistik:</strong> Setiap foto dalam galeri ini merupakan karya seni yang 
+                    dirancang dengan cermat. Kami mengundang Anda untuk menikmati keindahan visual, detail teknis, 
+                    dan narasi artistik yang disampaikan melalui setiap frame. Apresiasi seni dapat dinikmati 
+                    tanpa meniru aksi yang ditampilkan.
+                </div>
+
+                <!-- Section 4: Tanggung Jawab Pengguna -->
+                <div class="disclaimer-section">
+                    <h2>Tanggung Jawab Pengguna</h2>
+                    <p>Dengan mengakses situs ini, Anda setuju bahwa:</p>
+                    <ul>
+                        <li>Anda memahami bahwa konten ini adalah fiksi dan karya seni</li>
+                        <li>Anda tidak akan mencoba meniru atau mereplikasi aksi dalam foto</li>
+                        <li>Anda bertanggung jawab penuh atas keselamatan pribadi Anda</li>
+                        <li>Anda melihat konten ini untuk apresiasi artistik dan hiburan semata</li>
+                        <li>Pencipta konten tidak bertanggung jawab atas konsekuensi apapun dari penggunaan konten ini yang tidak tepat</li>
+                    </ul>
+                </div>
+
+                <!-- Section 5: Keamanan Rel Kereta -->
+                <div class="disclaimer-section">
+                    <h2>Catatan Keselamatan: Rel Kereta Api</h2>
+                    <p>
+                        <strong>Jalur kereta api adalah tempat yang berbahaya.</strong> Untuk perlindungan Anda:
+                    </p>
+                    <ul>
+                        <li>Selalu tetap di area yang ditunjuk dan aman</li>
+                        <li>Hindari area yang sangat dekat dengan rel kereta api</li>
+                        <li>Patuhi semua rambu dan peringatan keselamatan yang ada</li>
+                        <li>Jangan pernah berdiri atau bermain di rel kereta api</li>
+                        <li>Jika penasaran tentang kereta api, kunjungi museum atau pusat wisata kereta yang resmi</li>
+                    </ul>
+                </div>
+
+                <!-- Viewing Gallery Section -->
+                <div class="disclaimer-section">
+                    <h2>Cara Menikmati Galeri Ini</h2>
+                    <p>
+                        Jika Anda ingin melihat beberapa foto dari koleksi kami, Anda dapat:
+                    </p>
+                    <ul>
+                        <li>Mengklik tombol "Lihat Galeri" di bawah untuk melihat koleksi lengkap</li>
+                        <li>Memperhatikan detail fotografi, pencahayaan, dan komposisi setiap gambar</li>
+                        <li>Membaca deskripsi setiap foto untuk memahami narasi artistik</li>
+                        <li>Menghargai kerja keras dan dedikasi yang tercermin dalam setiap frame</li>
+                        <li>Berbagi apresiasi Anda terhadap seni visual dengan cara yang bertanggung jawab</li>
+                    </ul>
+                </div>
+
+                <!-- Final Acknowledgment -->
+                <div class="important-box">
+                    ✅ Saya memahami bahwa StickNext Rail Saga adalah karya fiksi artistik untuk hiburan semata<br><br>
+                    Saya setuju untuk tidak meniru aksi apapun dalam foto ini dan akan menghargai konten 
+                    ini dari perspektif artistik dan apresiasi visual semata. Saya bertanggung jawab penuh 
+                    atas keselamatan pribadi saya.
+                </div>
+
+                <!-- QUIZ SECTION - MANDATORY 15 QUESTIONS -->
+                <div class="quiz-section" id="quizSection">
+                    <h3>🎯 UJIAN PEMAHAMAN DISCLAIMER (15 PERTANYAAN - SEMUA WAJIB BENAR)</h3>
+                    <p style="color: #c2185b; margin-bottom: 20px;">
+                        <strong>⚠️ PENTING:</strong> Anda HARUS menjawab SEMUA 15 pertanyaan dengan BENAR untuk melanjutkan. 
+                        Ini memastikan Anda benar-benar memahami dan tidak akan salah paham dengan karya kami.
+                    </p>
+
+                    <div class="quiz-question">
+                        <p>1. Apa status StickNext Rail Saga?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option">
+                                <input type="radio" name="q1" value="wrong1" id="q1_1">
+                                <label for="q1_1">Dokumentasi kejadian nyata</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q1" value="correct" id="q1_2">
+                                <label for="q1_2">Karya seni fiksi untuk hiburan dan apresiasi artistik</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q1" value="wrong2" id="q1_3">
+                                <label for="q1_3">Tutorial cara beraksi di rel kereta</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p>2. Fokus utama apresiasi konten StickNext adalah?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option">
+                                <input type="radio" name="q2" value="wrong1" id="q2_1">
+                                <label for="q2_1">Meniru aksi-aksi dalam foto</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q2" value="correct" id="q2_2">
+                                <label for="q2_2">Kualitas artistik, komposisi, dan cerita - bukan aksinya</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q2" value="wrong2" id="q2_3">
+                                <label for="q2_3">Cara berbahaya berdiri di rel kereta</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p>3. Seberapa berbahayakah berdiri di rel kereta api nyata?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option">
+                                <input type="radio" name="q3" value="wrong1" id="q3_1">
+                                <label for="q3_1">Tidak berbahaya jika hati-hati</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q3" value="wrong2" id="q3_2">
+                                <label for="q3_2">Hanya berbahaya di malam hari</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q3" value="correct" id="q3_3">
+                                <label for="q3_3">SANGAT BERBAHAYA - dapat menyebabkan cedera serius atau fatal</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p>4. Apa makna simbolis dari aksi-aksi dalam foto?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option">
+                                <input type="radio" name="q4" value="correct" id="q4_1">
+                                <label for="q4_1">Ketangguhan, dedikasi, dan keberanian petugas</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q4" value="wrong1" id="q4_2">
+                                <label for="q4_2">Cara yang benar untuk bermain di rel kereta</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q4" value="wrong2" id="q4_3">
+                                <label for="q4_3">Petualangan nyata yang harus ditiru siapa saja</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p>5. Siapa yang bertanggung jawab penuh atas keselamatan Anda?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option">
+                                <input type="radio" name="q5" value="wrong1" id="q5_1">
+                                <label for="q5_1">Pencipta konten StickNext Rail Saga</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q5" value="wrong2" id="q5_2">
+                                <label for="q5_2">Kereta Api Indonesia</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q5" value="correct" id="q5_3">
+                                <label for="q5_3">Saya sendiri - tanggung jawab pribadi saya sepenuhnya</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p>6. Tujuan utama membuat disclaimer yang ketat ini adalah?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option">
+                                <input type="radio" name="q6" value="wrong1" id="q6_1">
+                                <label for="q6_1">Untuk memperumit akses ke galeri</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q6" value="correct" id="q6_2">
+                                <label for="q6_2">Memastikan pengunjung memahami karya ini fiksi dan tidak meniru aksi</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q6" value="wrong2" id="q6_3">
+                                <label for="q6_3">Untuk melarang siapa saja melihat foto</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p>7. Aspek apa dari foto yang BOLEH diapresiasi?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option">
+                                <input type="radio" name="q7" value="wrong1" id="q7_1">
+                                <label for="q7_1">Metode berbahaya yang ditampilkan</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q7" value="correct" id="q7_2">
+                                <label for="q7_2">Kualitas fotografi, pencahayaan, komposisi, dan teknik visual</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q7" value="wrong2" id="q7_3">
+                                <label for="q7_3">Cara mendapatkan trik beraksi di rel</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p>8. Jika penasaran ingin melihat kereta nyata, apa yang BENAR dilakukan?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option">
+                                <input type="radio" name="q8" value="wrong1" id="q8_1">
+                                <label for="q8_1">Berdiri di dekat rel yang aktif</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q8" value="correct" id="q8_2">
+                                <label for="q8_2">Kunjungi museum atau pusat wisata kereta api yang resmi dan aman</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q8" value="wrong2" id="q8_3">
+                                <label for="q8_3">Bermain-main sendiri di area rel kereta</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p>9. Konten ini mencakup skenario apa yang mungkin terlihat berisiko?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option">
+                                <input type="radio" name="q9" value="wrong1" id="q9_1">
+                                <label for="q9_1">Hanya pemandangan rel kereta biasa</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q9" value="correct" id="q9_2">
+                                <label for="q9_2">Berdiri di rel sempit, dekat lokomotif, pose yang tampak berbahaya</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q9" value="wrong2" id="q9_3">
+                                <label for="q9_3">Hanya cerita teks tanpa visual apapun</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p>10. Bolehkah Anda membagikan aksi foto ini sebagai inspirasi untuk ditiru?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option">
+                                <input type="radio" name="q10" value="wrong1" id="q10_1">
+                                <label for="q10_1">Boleh, karena hanya fotografi</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q10" value="correct" id="q10_2">
+                                <label for="q10_2">TIDAK - harus diapresiasi sebagai seni, bukan inspirasi aksi</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q10" value="wrong2" id="q10_3">
+                                <label for="q10_3">Boleh jika dibagikan ke orang dewasa saja</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p>11. Apa konsekuensi jika Anda mengabaikan disclaimer dan meniru aksi?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option">
+                                <input type="radio" name="q11" value="wrong1" id="q11_1">
+                                <label for="q11_1">Pencipta konten akan bertanggung jawab</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q11" value="correct" id="q11_2">
+                                <label for="q11_2">Anda sendiri yang bertanggung jawab, tanpa kecuali</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q11" value="wrong2" id="q11_3">
+                                <label for="q11_3">Kereta Api Indonesia yang bertanggung jawab</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p>12. Mengapa setiap aksi dalam foto bersifat SIMBOLIK dan bukan literal?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option">
+                                <input type="radio" name="q12" value="wrong1" id="q12_1">
+                                <label for="q12_1">Untuk membuat orang tertarik meniru</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q12" value="correct" id="q12_2">
+                                <label for="q12_2">Mewakili ketangguhan dan dedikasi, bukan panduan aksi nyata</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q12" value="wrong2" id="q12_3">
+                                <label for="q12_3">Karena photo editing membuatnya terlihat palsu</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p>13. Apakah Anda boleh tetap masuk ke galeri jika belum sepenuhnya memahami disclaimer?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option">
+                                <input type="radio" name="q13" value="correct" id="q13_1">
+                                <label for="q13_1">TIDAK - harus benar-benar memahami dan lolos kuis 100%</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q13" value="wrong1" id="q13_2">
+                                <label for="q13_2">Boleh, karena hanya sekedar fotografi</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q13" value="wrong2" id="q13_3">
+                                <label for="q13_3">Boleh jika janji tidak akan berbagi dengan orang lain</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p>14. Apa yang dimaksud dengan "apresiasi artistik yang bertanggung jawab"?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option">
+                                <input type="radio" name="q14" value="wrong1" id="q14_1">
+                                <label for="q14_1">Meniru dan menyebarkan aksi dalam foto</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q14" value="correct" id="q14_2">
+                                <label for="q14_2">Menikmati seni sambil memahami limitasi, tidak meniru, dan aman</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q14" value="wrong2" id="q14_3">
+                                <label for="q14_3">Berbagi foto tanpa disclaimer ke teman-teman</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p>15. Dengan lulus kuis ini, saya berkomitmen untuk:</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option">
+                                <input type="radio" name="q15" value="wrong1" id="q15_1">
+                                <label for="q15_1">Hanya melihat foto dan tidak peduli dengan keselamatan</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q15" value="correct" id="q15_2">
+                                <label for="q15_2">Memahami fiksi, apresiasi seni, tidak meniru, dan prioritas keselamatan</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q15" value="wrong2" id="q15_3">
+                                <label for="q15_3">Menganggap semua aksi dalam foto bisa dilakukan dalam kehidupan nyata</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="submit-quiz-btn" id="submitQuizBtn" onclick="submitQuiz()">📊 Periksa Jawaban Semua Pertanyaan</button>
+                    <div class="quiz-feedback" id="quizFeedback"></div>
+                </div>
+
+                <!-- LOCKED MESSAGE - Shows when quiz not passed -->
+                <div class="locked-message" id="lockedMessage" style="display: none;">
+                    🔒 TOMBOL LANJUT TERKUNCI<br>
+                    Anda harus menyelesaikan kuis di atas dengan jawaban yang BENAR sebelum bisa melanjutkan ke galeri.
+                    Pastikan Anda benar-benar memahami disclaimer ini!
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="index.html" class="btn btn-primary" id="continueBtn" onclick="return checkAllRequirements(event)">✓ Saya Memahami - Lihat Galeri</a>
+                    <a href="about.html" class="btn btn-secondary">Pelajari Lebih Lanjut</a>
+                </div>
+
+                <!-- Footer Note -->
+                <div class="footer-note">
+                    <p>
+                        Disclaimer ini dibuat untuk memastikan setiap pengunjung memahami sifat artistik dan fiksi 
+                        dari konten kami, serta untuk mempromosikan keselamatan dan apresiasi seni yang bertanggung jawab.
+                    </p>
+                    <p style="margin-top: 10px;">
+                        <strong>Terakhir Diperbarui:</strong> 16 Mei 2026
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer style="background: var(--secondary-bg); border-top: 1px solid var(--border-color); padding: 30px; text-align: center; color: var(--text-tertiary); margin-top: 60px;">
+        <p>&copy; 2026 StickNext Rail Saga. Semua Hak Dilindungi. | <a href="license.html" style="color: #1976d2; text-decoration: none;">Lisensi</a> | <a href="contact.html" style="color: #1976d2; text-decoration: none;">Kontak</a></p>
+    </footer>
+
+    <script>
+        // Tracking variables
+        let hasReadFully = false;
+        let quizPassed = false;
+        const disclaimerContainer = document.querySelector('.disclaimer-container');
+        const DISCLAIMER_KEY = 'sticknext_disclaimer_passed_v1';
+
+        // Check if disclaimer already passed from localStorage on page load
+        window.addEventListener('load', function() {
+            checkDisclaimerStatus();
+            updateReadingProgress();
+            updateButtonState();
+        });
+
+        function checkDisclaimerStatus() {
+            const passed = localStorage.getItem(DISCLAIMER_KEY);
+            if (passed === 'true') {
+                quizPassed = true;
+                hasReadFully = true;
+                document.getElementById('quizSection').style.display = 'none';
+                const lockedMessage = document.getElementById('lockedMessage');
+                lockedMessage.innerHTML = '✅ Anda telah lolos disclaimer sebelumnya. Silakan lanjut ke galeri!';
+                lockedMessage.style.display = 'block';
+                lockedMessage.style.background = '#e8f5e9';
+                lockedMessage.style.borderLeft = '4px solid #4caf50';
+                lockedMessage.style.color = '#2e7d32';
+                updateButtonState();
+            }
+        }
+
+        // Monitor scroll progress
+        window.addEventListener('scroll', function() {
+            updateReadingProgress();
+        });
+
+        function updateReadingProgress() {
+            if (!disclaimerContainer) return;
+
+            const containerTop = disclaimerContainer.offsetTop;
+            const containerHeight = disclaimerContainer.offsetHeight;
+            const windowHeight = window.innerHeight;
+            const scrolled = window.scrollY;
+
+            // Calculate progress
+            let progress = 0;
+            if (scrolled + windowHeight >= containerTop + containerHeight) {
+                progress = 100;
+                hasReadFully = true;
+            } else if (scrolled > containerTop) {
+                progress = Math.min(((scrolled - containerTop + windowHeight) / (containerHeight + windowHeight)) * 100, 99);
+            }
+
+            // Update progress bar
+            const progressFill = document.getElementById('progressFill');
+            const readingStatus = document.getElementById('readingStatus');
+            
+            if (progressFill) {
+                progressFill.style.width = progress + '%';
+            }
+
+            // Update status text
+            if (readingStatus) {
+                if (progress === 100 && hasReadFully) {
+                    readingStatus.textContent = '✅ Anda telah membaca seluruh disclaimer! Sekarang jawab kuis di bawah.';
+                    readingStatus.className = 'reading-status completed';
+                } else if (progress > 50) {
+                    readingStatus.textContent = `📖 Lanjutkan membaca... (${Math.floor(progress)}% selesai)`;
+                    readingStatus.className = 'reading-status in-progress';
+                } else if (progress > 0) {
+                    readingStatus.textContent = `📖 Mulai baca disclaimer ini dengan seksama... (${Math.floor(progress)}% selesai)`;
+                    readingStatus.className = 'reading-status in-progress';
+                } else {
+                    readingStatus.textContent = '📖 Mulai baca disclaimer ini dengan seksama...';
+                    readingStatus.className = 'reading-status not-started';
+                }
+            }
+
+            // Show quiz when fully read
+            if (hasReadFully && !quizPassed && !document.getElementById('quizSection').classList.contains('show')) {
+                document.getElementById('quizSection').classList.add('show');
+                // Scroll to quiz
+                setTimeout(() => {
+                    document.getElementById('quizSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 300);
+            }
+
+            updateButtonState();
+        }
+
+        function submitQuiz() {
+            // Get all 15 answers
+            const answers = {};
+            let allAnswered = true;
+            let allCorrect = true;
+
+            for (let i = 1; i <= 15; i++) {
+                const answer = document.querySelector(`input[name="q${i}"]:checked`)?.value;
+                answers[`q${i}`] = answer;
+                
+                if (!answer) {
+                    allAnswered = false;
+                }
+                if (answer !== 'correct') {
+                    allCorrect = false;
+                }
+            }
+
+            // Check if all questions answered
+            if (!allAnswered) {
+                showQuizFeedback('❌ BELUM SELESAI! Mohon jawab SEMUA 15 pertanyaan sebelum mengirim!', false);
+                return;
+            }
+
+            // Check if all correct
+            if (allCorrect) {
+                quizPassed = true;
+                // Save to localStorage
+                localStorage.setItem(DISCLAIMER_KEY, 'true');
+                showQuizFeedback('🎉 SEMPURNA! Anda telah menjawab SEMUA pertanyaan dengan BENAR!\n✅ Sekarang Anda bisa melanjutkan ke galeri tanpa hambatan.', true);
+                document.getElementById('lockedMessage').style.display = 'none';
+                updateButtonState();
+            } else {
+                // Count how many wrong
+                let wrongCount = 0;
+                for (let i = 1; i <= 15; i++) {
+                    if (answers[`q${i}`] !== 'correct') {
+                        wrongCount++;
+                    }
+                }
+                showQuizFeedback(`❌ ADA JAWABAN YANG SALAH! (${wrongCount} dari 15 pertanyaan salah)\n\nANDA HARUS MENJAWAB SEMUA 15 PERTANYAAN DENGAN BENAR!\n\nMohon baca kembali disclaimer dengan TELITI dan coba lagi.`, false);
+                quizPassed = false;
+                updateButtonState();
+            }
+        }
+
+        function showQuizFeedback(message, isCorrect) {
+            const feedback = document.getElementById('quizFeedback');
+            feedback.textContent = message;
+            feedback.className = 'quiz-feedback show ' + (isCorrect ? 'correct' : 'incorrect');
+            feedback.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function updateButtonState() {
+            const continueBtn = document.getElementById('continueBtn');
+            const lockedMessage = document.getElementById('lockedMessage');
+
+            if (hasReadFully && quizPassed) {
+                continueBtn.classList.remove('disabled');
+                continueBtn.style.pointerEvents = 'auto';
+                lockedMessage.style.display = 'none';
+            } else if (hasReadFully && !quizPassed) {
+                continueBtn.classList.add('disabled');
+                continueBtn.style.pointerEvents = 'none';
+                lockedMessage.style.display = 'block';
+                lockedMessage.textContent = '🔒 TOMBOL LANJUT TERKUNCI\nAnda harus menyelesaikan SEMUA 15 soal dengan jawaban BENAR!';
+                lockedMessage.style.background = '#ffebee';
+                lockedMessage.style.color = '#c62828';
+                lockedMessage.style.borderLeft = '2px dashed #d32f2f';
+            } else {
+                continueBtn.classList.add('disabled');
+                continueBtn.style.pointerEvents = 'none';
+                lockedMessage.textContent = '🔒 TOMBOL TERKUNCI\nAnda harus membaca SELURUH disclaimer terlebih dahulu!';
+                lockedMessage.style.display = 'block';
+                lockedMessage.style.background = '#ffebee';
+                lockedMessage.style.color = '#c62828';
+                lockedMessage.style.borderLeft = '2px dashed #d32f2f';
+            }
+        }
+
+        function checkAllRequirements(event) {
+            if (!hasReadFully || !quizPassed) {
+                event.preventDefault();
+                alert('⛔ AKSES DITOLAK!\n\nAnda harus:\n✓ Membaca seluruh disclaimer (100%)\n✓ Menjawab SEMUA 15 soal dengan benar\n\nBaru setelah itu Anda bisa masuk ke galeri.');
+                return false;
+            }
+            return true;
+        }
+
+        // Initial state
+        updateButtonState();
+    </script>
+</body>
+</html>

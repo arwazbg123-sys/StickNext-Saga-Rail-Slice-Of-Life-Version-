@@ -4,15 +4,18 @@
  */
 
 class BeatCharacter {
-    constructor(id, name, emoji, color, soundUrl, bpm = 120) {
+    constructor(id, name, emoji, color, soundUrl, bpm = 120, rhythmInterval = 1) {
         this.id = id;
         this.name = name;
         this.emoji = emoji;
         this.color = color;
         this.soundUrl = soundUrl;
         this.bpm = bpm;
+        this.rhythmInterval = rhythmInterval; // Interval dalam detik antara setiap sound playback
         this.isActive = false;
         this.audioElement = null;
+        this.isLooping = false; // Menandakan karakter sedang loop
+        this.loopTimeout = null; // Timer untuk next loop
     }
 
     createAudioElement() {
@@ -32,6 +35,14 @@ class BeatCharacter {
 
     stop() {
         this.isActive = false;
+        this.isLooping = false;
+        
+        // Clear any pending loop timeout
+        if (this.loopTimeout) {
+            clearTimeout(this.loopTimeout);
+            this.loopTimeout = null;
+        }
+        
         if (this.audioElement) {
             this.audioElement.pause();
             this.audioElement.currentTime = 0;
@@ -66,7 +77,8 @@ class BeatCharacterManager {
                 emoji: '🌹',
                 color: '#ff69b4',
                 soundUrl: 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==',
-                bpm: 120
+                bpm: 120,
+                rhythmInterval: 1.0 // 1 detik
             },
             {
                 id: 'petalina',
@@ -74,7 +86,8 @@ class BeatCharacterManager {
                 emoji: '🌸',
                 color: '#ff1493',
                 soundUrl: 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==',
-                bpm: 115
+                bpm: 115,
+                rhythmInterval: 1.2 // 1.2 detik
             },
             {
                 id: 'nitra',
@@ -82,7 +95,8 @@ class BeatCharacterManager {
                 emoji: '⚡',
                 color: '#00bfff',
                 soundUrl: 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==',
-                bpm: 130
+                bpm: 130,
+                rhythmInterval: 0.8 // 0.8 detik
             },
             {
                 id: 'guardian',
@@ -90,7 +104,8 @@ class BeatCharacterManager {
                 emoji: '🛡️',
                 color: '#32cd32',
                 soundUrl: 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==',
-                bpm: 100
+                bpm: 100,
+                rhythmInterval: 2.0 // 2 detik
             },
             {
                 id: 'thunder',
@@ -98,7 +113,8 @@ class BeatCharacterManager {
                 emoji: '⚙️',
                 color: '#ffd700',
                 soundUrl: 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==',
-                bpm: 140
+                bpm: 140,
+                rhythmInterval: 0.6 // 0.6 detik
             },
             {
                 id: 'dash',
@@ -106,7 +122,8 @@ class BeatCharacterManager {
                 emoji: '💨',
                 color: '#00ff00',
                 soundUrl: 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==',
-                bpm: 125
+                bpm: 125,
+                rhythmInterval: 2.0 // 2 detik
             },
             {
                 id: 'tockay',
@@ -114,7 +131,8 @@ class BeatCharacterManager {
                 emoji: '⏰',
                 color: '#ff4500',
                 soundUrl: 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==',
-                bpm: 110
+                bpm: 110,
+                rhythmInterval: 0.75 // 0.75 detik
             },
             {
                 id: 'rail_girl',
@@ -122,7 +140,8 @@ class BeatCharacterManager {
                 emoji: '🚂',
                 color: '#ff00ff',
                 soundUrl: 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==',
-                bpm: 135
+                bpm: 135,
+                rhythmInterval: 1.5 // 1.5 detik
             }
         ];
 
@@ -133,7 +152,8 @@ class BeatCharacterManager {
                 data.emoji,
                 data.color,
                 data.soundUrl,
-                data.bpm
+                data.bpm,
+                data.rhythmInterval
             ));
         });
     }

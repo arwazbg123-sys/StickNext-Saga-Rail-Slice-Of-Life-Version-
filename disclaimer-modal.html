@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disclaimer Modal - StickNext Rail Saga</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fafaf8;
+            color: #1a1a1a;
+        }
+
+        /* Modal Styling */
+        .disclaimer-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(4px);
+        }
+
+        .disclaimer-modal {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            border: 3px solid #d32f2f;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 13px 13px 0 0;
+            text-align: center;
+            border-bottom: 3px solid #d32f2f;
+        }
+
+        .modal-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .modal-header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .modal-progress {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .modal-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px;
+        }
+
+        .content-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            border-left: 4px solid #1976d2;
+        }
+
+        .content-section h3 {
+            color: #1976d2;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .content-section p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border: 3px solid #ff9800;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            color: #e65100;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .quiz-section {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            border: 3px solid #e91e63;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .quiz-section.show {
+            display: block;
+        }
+
+        .quiz-question {
+            margin-bottom: 18px;
+        }
+
+        .quiz-question p {
+            color: #c2185b;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            background: white;
+            border: 2px solid #e91e63;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-option:hover {
+            background: #fce4ec;
+            border-color: #c2185b;
+        }
+
+        .quiz-option input {
+            margin-right: 10px;
+            cursor: pointer;
+            accent-color: #e91e63;
+        }
+
+        .quiz-option label {
+            cursor: pointer;
+            flex: 1;
+            color: #880e4f;
+            font-size: 0.9rem;
+        }
+
+        .quiz-feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            display: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+        }
+
+        .quiz-feedback.incorrect {
+            background: #ffebee;
+            color: #c62828;
+            border-left: 4px solid #d32f2f;
+        }
+
+        .quiz-feedback.correct {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-left: 4px solid #4caf50;
+        }
+
+        .modal-footer {
+            padding: 20px 25px;
+            background: #f5f5f5;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(25, 118, 210, 0.3);
+        }
+
+        .btn-primary:disabled,
+        .btn-primary.disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+            transform: none;
+        }
+
+        .locked-message {
+            text-align: center;
+            color: #c62828;
+            font-weight: 600;
+            padding: 15px;
+            background: #ffebee;
+            border: 2px dashed #d32f2f;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .disclaimer-modal {
+                width: 95%;
+                max-height: 95vh;
+            }
+
+            .modal-content {
+                padding: 15px;
+            }
+
+            .modal-header {
+                padding: 15px;
+            }
+
+            .modal-header h1 {
+                font-size: 1.4rem;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Scrollbar styling */
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #d32f2f;
+            border-radius: 4px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb:hover {
+            background: #b71c1c;
+        }
+    </style>
+</head>
+<body>
+    <!-- Disclaimer Modal -->
+    <div class="disclaimer-modal-overlay" id="disclaimerOverlay">
+        <div class="disclaimer-modal">
+            <div class="modal-header">
+                <h1>⚠️ DISCLAIMER PENTING</h1>
+                <p>Mohon baca dengan seksama sebelum melanjutkan</p>
+                <div class="modal-progress">
+                    <div id="readingStatusText" style="color: #ffcdd2;">📖 Mulai membaca...</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-content" id="modalContent">
+                <div class="warning-box" style="margin-top: 0;">
+                    🔴 HALAMAN INI WAJIB DIBACA SEBELUM MELIHAT KONTEN
+                </div>
+
+                <!-- Content sections -->
+                <div class="content-section">
+                    <h3>Ini Adalah Karya Fiksi</h3>
+                    <p><strong>StickNext Rail Saga</strong> adalah <strong>KARYA SENI FIKSI MURNI</strong> yang dibuat untuk tujuan <strong>hiburan dan apresiasi artistik</strong> semata. Seluruh konten, foto, dan narasi adalah kreasi imajinasi dan bukan dokumentasi kejadian nyata.</p>
+                </div>
+
+                <div class="content-section">
+                    <h3>Konten yang Mungkin Disalahpahami</h3>
+                    <p>Beberapa foto menampilkan skenario yang mungkin terlihat berisiko, seperti berdiri di rel kereta, dekat lokomotif, dan pose yang tampak berbahaya. <strong>SEMUA AKSI INI HANYALAH SIMBOLIK</strong> dan tidak dimaksudkan untuk ditiru.</p>
+                </div>
+
+                <div class="warning-box">
+                    🚫 JANGAN MENIRU AKSI DI FOTO INI DALAM KEHIDUPAN NYATA<br><br>
+                    Berada di rel kereta api adalah <strong>SANGAT BERBAHAYA</strong> dan dapat menyebabkan cedera serius atau fatal.
+                </div>
+
+                <div class="content-section">
+                    <h3>Tujuan & Apresiasi Artistik</h3>
+                    <p>Konten dirancang untuk menampilkan kualitas fotografi, komposisi visual, dan narasi artistik tentang ketangguhan. Apresiasi Anda harus fokus pada kualitas artistik—bukan pada aksi atau tingkah laku.</p>
+                </div>
+
+                <div class="content-section">
+                    <h3>Tanggung Jawab Pengguna</h3>
+                    <p>Dengan mengakses situs ini, Anda memahami bahwa: konten ini adalah fiksi, Anda tidak akan meniru aksi, Anda bertanggung jawab penuh atas keselamatan pribadi, dan Anda melihat konten untuk apresiasi artistik semata.</p>
+                </div>
+
+                <!-- Quiz Section -->
+                <div class="quiz-section" id="quizSection">
+                    <h3 style="color: #c2185b; margin-bottom: 15px;">🎯 UJIAN PEMAHAMAN (5 PERTANYAAN WAJIB)</h3>
+
+                    <div class="quiz-question">
+                        <p>1. Apa status StickNext Rail Saga?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option">
+                                <input type="radio" name="q1" value="wrong1" id="q1_1">
+                                <label for="q1_1">Dokumentasi kejadian nyata</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q1" value="correct" id="q1_2">
+                                <label for="q1_2">Karya seni fiksi untuk hiburan dan apresiasi artistik</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p>2. Seberapa berbahayakah berdiri di rel kereta nyata?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option">
+                                <input type="radio" name="q2" value="wrong1" id="q2_1">
+                                <label for="q2_1">Tidak berbahaya jika hati-hati</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q2" value="correct" id="q2_2">
+                                <label for="q2_2">SANGAT BERBAHAYA - dapat menyebabkan cedera serius atau fatal</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p>3. Apa makna simbolis dari aksi dalam foto?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option">
+                                <input type="radio" name="q3" value="wrong1" id="q3_1">
+                                <label for="q3_1">Cara yang benar untuk bermain di rel kereta</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q3" value="correct" id="q3_2">
+                                <label for="q3_2">Ketangguhan, dedikasi, dan keberanian - simbolik artistik</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p>4. Siapa yang bertanggung jawab penuh atas keselamatan Anda?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option">
+                                <input type="radio" name="q4" value="wrong1" id="q4_1">
+                                <label for="q4_1">Pencipta konten</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q4" value="correct" id="q4_2">
+                                <label for="q4_2">Saya sendiri - tanggung jawab pribadi saya sepenuhnya</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p>5. Dengan lulus disclaimer, saya berkomitmen untuk:</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option">
+                                <input type="radio" name="q5" value="wrong1" id="q5_1">
+                                <label for="q5_1">Meniru aksi dalam foto</label>
+                            </div>
+                            <div class="quiz-option">
+                                <input type="radio" name="q5" value="correct" id="q5_2">
+                                <label for="q5_2">Memahami fiksi, apresiasi seni, tidak meniru, prioritas keselamatan</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button style="width: 100%; padding: 12px; margin-top: 15px; background: #e91e63; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;" onclick="submitQuiz()">📊 Periksa Jawaban</button>
+                    <div class="quiz-feedback" id="quizFeedback"></div>
+                </div>
+
+                <div class="locked-message" id="lockedMessage" style="display: none;"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-primary disabled" id="continueBtn" onclick="return continueToGallery(event)">✓ Lanjut ke Galeri</button>
+                <button class="btn" style="background: #666; color: white;" onclick="exitWarning()">✕ Keluar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== COOKIE MANAGEMENT ==========
+        function setCookie(name, value, days = 365) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/;SameSite=Lax";
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const cookies = document.cookie.split(';');
+            for(let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i].trim();
+                if (cookie.indexOf(nameEQ) === 0) {
+                    return decodeURIComponent(cookie.substring(nameEQ.length));
+                }
+            }
+            return null;
+        }
+
+        // ========== STATE ==========
+        const DISCLAIMER_COOKIE = 'sticknext_disclaimer_passed';
+        const DISCLAIMER_VERSION = 'v2_2026';
+        let hasReadFully = false;
+        let quizPassed = false;
+        const modalContent = document.getElementById('modalContent');
+
+        // ========== INITIALIZATION ==========
+        window.addEventListener('load', function() {
+            checkCookie();
+            setupScroll();
+        });
+
+        function checkCookie() {
+            const cookieValue = getCookie(DISCLAIMER_COOKIE);
+            if (cookieValue === DISCLAIMER_VERSION) {
+                // Already passed - redirect to index.html
+                console.log('✅ Cookie valid, redirecting to index.html');
+                window.location.replace('index.html');
+                return;
+            }
+        }
+
+        // ========== SCROLL TRACKING ==========
+        function setupScroll() {
+            modalContent.addEventListener('scroll', function() {
+                updateProgress();
+            });
+        }
+
+        function updateProgress() {
+            const scrollTop = modalContent.scrollTop;
+            const scrollHeight = modalContent.scrollHeight - modalContent.clientHeight;
+            const progress = Math.min((scrollTop / scrollHeight) * 100, 99);
+
+            document.getElementById('progressFill').style.width = progress + '%';
+
+            const statusText = document.getElementById('readingStatusText');
+            if (progress >= 95) {
+                statusText.textContent = '✅ Anda telah membaca seluruh disclaimer! Jawab kuis di bawah.';
+                hasReadFully = true;
+                showQuiz();
+            } else if (progress > 50) {
+                statusText.textContent = `📖 Lanjutkan membaca... (${Math.floor(progress)}% selesai)`;
+            } else if (progress > 0) {
+                statusText.textContent = `📖 Mulai membaca... (${Math.floor(progress)}% selesai)`;
+            }
+
+            updateButtonState();
+        }
+
+        function showQuiz() {
+            if (!document.getElementById('quizSection').classList.contains('show')) {
+                document.getElementById('quizSection').classList.add('show');
+            }
+        }
+
+        // ========== QUIZ HANDLING ==========
+        function submitQuiz() {
+            const answers = {};
+            let allAnswered = true;
+            let allCorrect = true;
+
+            for (let i = 1; i <= 5; i++) {
+                const answer = document.querySelector(`input[name="q${i}"]:checked`)?.value;
+                answers[`q${i}`] = answer;
+                if (!answer) allAnswered = false;
+                if (answer !== 'correct') allCorrect = false;
+            }
+
+            if (!allAnswered) {
+                showFeedback('❌ Mohon jawab SEMUA 5 pertanyaan!', false);
+                return;
+            }
+
+            if (allCorrect) {
+                quizPassed = true;
+                setCookie(DISCLAIMER_COOKIE, DISCLAIMER_VERSION, 365);
+                showFeedback('🎉 BENAR SEMUA! Cookie disimpan 365 hari.\n⚠️ Jangan clear cookies atau harus baca ulang!', true);
+                setTimeout(() => {
+                    document.getElementById('continueBtn').classList.remove('disabled');
+                }, 1000);
+            } else {
+                let wrongCount = 0;
+                for (let i = 1; i <= 5; i++) {
+                    if (answers[`q${i}`] !== 'correct') wrongCount++;
+                }
+                showFeedback(`❌ ${wrongCount} jawaban salah! Baca ulang dan coba lagi.`, false);
+            }
+        }
+
+        function showFeedback(message, isCorrect) {
+            const feedback = document.getElementById('quizFeedback');
+            feedback.textContent = message;
+            feedback.className = 'quiz-feedback show ' + (isCorrect ? 'correct' : 'incorrect');
+        }
+
+        function updateButtonState() {
+            const btn = document.getElementById('continueBtn');
+            const lockedMsg = document.getElementById('lockedMessage');
+
+            if (hasReadFully && !quizPassed) {
+                lockedMsg.style.display = 'block';
+                lockedMsg.textContent = '🔒 Jawab kuis dengan benar untuk melanjutkan!';
+            } else if (quizPassed) {
+                lockedMsg.style.display = 'none';
+                btn.classList.remove('disabled');
+            } else {
+                lockedMsg.style.display = 'block';
+                lockedMsg.textContent = '🔒 Baca seluruh disclaimer terlebih dahulu!';
+            }
+        }
+
+        // ========== NAVIGATION ==========
+        function continueToGallery(event) {
+            if (!quizPassed) {
+                event.preventDefault();
+                alert('⛔ Anda belum lolos disclaimer!');
+                return false;
+            }
+            closeModal();
+            
+            // Verifikasi cookie tersimpan SEBELUM redirect
+            const checkCookieAndRedirect = () => {
+                const savedCookie = getCookie(DISCLAIMER_COOKIE);
+                console.log('🔍 Checking cookie:', savedCookie);
+                if (savedCookie === DISCLAIMER_VERSION) {
+                    console.log('✅ Cookie verified! Redirecting to index.html');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 200);
+                } else {
+                    console.log('⚠️ Cookie not set yet, retrying...');
+                    setTimeout(checkCookieAndRedirect, 100);
+                }
+            };
+            
+            checkCookieAndRedirect();
+            return false;
+        }
+
+        function closeModal() {
+            document.getElementById('disclaimerOverlay').style.display = 'none';
+        }
+
+        function exitWarning() {
+            if (confirm('⚠️ Jika Anda keluar tanpa membaca disclaimer, Anda tidak bisa masuk ke galeri.\n\nLanjutkan?')) {
+                window.location.href = 'about.html';
+            }
+        }
+
+        updateButtonState();
+    </script>
+</body>
+</html>

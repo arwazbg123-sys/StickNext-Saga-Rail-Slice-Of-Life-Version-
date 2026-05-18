@@ -70,26 +70,76 @@ class AudioContext {
 }
 
 class CharacterSound {
-    constructor(characterId, name, frequency, type = 'sine', envelope = 'default') {
+    constructor(characterId, name, frequency, type = 'sine', envelope = 'default', melodyBase64 = null) {
         this.characterId = characterId;
         this.name = name;
         this.frequency = frequency;
         this.type = type;
         this.envelope = envelope;
         this.isPlaying = false;
+        this.melodyBase64 = melodyBase64;
+        this.melodyAudioBuffer = null;
+        this.source = null;
     }
 
-    play(audioContext) {
-        this.isPlaying = true;
-        audioContext.playNote(this.frequency, 0.4, this.type, this.envelope);
+    async loadMelodyBuffer(audioContext) {
+        if (!this.melodyBase64 || this.melodyAudioBuffer) return;
+        
+        try {
+            const binaryString = atob(this.melodyBase64);
+            const bytes = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            this.melodyAudioBuffer = await audioContext.context.decodeAudioData(bytes.buffer);
+        } catch (err) {
+            console.error(`Failed to load melody for ${this.name}:`, err);
+        }
+    }
 
-        setTimeout(() => {
-            this.isPlaying = false;
-        }, 400);
+    async play(audioContext) {
+        if (this.melodyBase64) {
+            // Play melody dari base64
+            await this.loadMelodyBuffer(audioContext);
+            if (this.melodyAudioBuffer) {
+                const now = audioContext.context.currentTime;
+                this.source = audioContext.context.createBufferSource();
+                this.source.buffer = this.melodyAudioBuffer;
+                
+                const gainNode = audioContext.context.createGain();
+                gainNode.gain.value = 0.7;
+                
+                this.source.connect(gainNode);
+                gainNode.connect(audioContext.masterGain);
+                this.source.start(now);
+                
+                this.isPlaying = true;
+                setTimeout(() => {
+                    this.isPlaying = false;
+                    if (this.source) {
+                        try {
+                            this.source.stop();
+                        } catch (e) {}
+                    }
+                }, this.melodyAudioBuffer.duration * 1000);
+            }
+        } else {
+            // Fallback ke oscillator jika tidak ada melody
+            this.isPlaying = true;
+            audioContext.playNote(this.frequency, 0.4, this.type, this.envelope);
+            setTimeout(() => {
+                this.isPlaying = false;
+            }, 400);
+        }
     }
 
     stop(audioContext) {
         this.isPlaying = false;
+        if (this.source) {
+            try {
+                this.source.stop();
+            } catch (e) {}
+        }
         audioContext.stopAll();
     }
 }
@@ -98,20 +148,21 @@ class BeatSoundManager {
     constructor() {
         this.audioContext = new AudioContext();
         this.characters = new Map();
+        this.activeLoops = new Map(); // { characterId: { isLooping, timeout, character } }
         this.initializeCharacterSounds();
-        this.playbackMode = 'simultaneous'; // 'simultaneous' or 'sequential'
+        this.playbackMode = 'simultaneous';
     }
 
     initializeCharacterSounds() {
         const sounds = [
-            { id: 'rose', name: 'Rose', freq: 440, type: 'sine', envelope: 'pad' },           // A4
-            { id: 'petalina', name: 'Petalina', freq: 494, type: 'sine', envelope: 'default' }, // B4
-            { id: 'nitra', name: 'Nitra', freq: 523, type: 'triangle', envelope: 'snappy' },    // C5
-            { id: 'guardian', name: 'Guardian', freq: 392, type: 'square', envelope: 'default' }, // G4
-            { id: 'thunder', name: 'Thunder', freq: 587, type: 'triangle', envelope: 'snappy' }, // D5
-            { id: 'dash', name: 'Dash', freq: 659, type: 'sine', envelope: 'snappy' },          // E5
-            { id: 'tockay', name: 'Tockay', freq: 349, type: 'square', envelope: 'snappy' },    // F4
-            { id: 'rail_girl', name: 'Rail Girl', freq: 784, type: 'sine', envelope: 'pad' }    // G5
+            { id: 'rose', name: 'Rose', freq: 440, type: 'sine', envelope: 'pad', melody: CHARACTER_MELODIES?.rose },
+            { id: 'petalina', name: 'Petalina', freq: 494, type: 'sine', envelope: 'default', melody: CHARACTER_MELODIES?.petalina },
+            { id: 'nitra', name: 'Nitra', freq: 523, type: 'triangle', envelope: 'snappy', melody: CHARACTER_MELODIES?.nitra },
+            { id: 'guardian', name: 'Guardian', freq: 392, type: 'square', envelope: 'default', melody: CHARACTER_MELODIES?.guardian },
+            { id: 'thunder', name: 'Thunder', freq: 587, type: 'triangle', envelope: 'snappy', melody: CHARACTER_MELODIES?.thunder },
+            { id: 'dash', name: 'Dash', freq: 659, type: 'sine', envelope: 'snappy', melody: CHARACTER_MELODIES?.dash },
+            { id: 'tockay', name: 'Tockay', freq: 349, type: 'square', envelope: 'snappy', melody: CHARACTER_MELODIES?.tockay },
+            { id: 'rail_girl', name: 'Rail Girl', freq: 784, type: 'sine', envelope: 'pad', melody: CHARACTER_MELODIES?.rail_girl }
         ];
 
         sounds.forEach(sound => {
@@ -120,15 +171,16 @@ class BeatSoundManager {
                 sound.name,
                 sound.freq,
                 sound.type,
-                sound.envelope
+                sound.envelope,
+                sound.melody
             ));
         });
     }
 
-    playCharacterSound(characterId) {
+    async playCharacterSound(characterId) {
         const sound = this.characters.get(characterId);
         if (sound) {
-            sound.play(this.audioContext);
+            await sound.play(this.audioContext);
             return true;
         }
         return false;
@@ -143,11 +195,85 @@ class BeatSoundManager {
         return false;
     }
 
+    /**
+     * Start looping sound untuk character dengan rhythm interval tertentu
+     * @param {string} characterId - ID character
+     * @param {number} rhythmInterval - Interval dalam detik antara sound playback
+     */
+    startCharacterLoop(characterId, rhythmInterval) {
+        // Stop existing loop jika ada
+        if (this.activeLoops.has(characterId)) {
+            this.stopCharacterLoop(characterId);
+        }
+
+        const sound = this.characters.get(characterId);
+        if (!sound || !rhythmInterval || rhythmInterval <= 0) return false;
+
+        // Setup loop dengan interval (playback pertama sudah dilakukan di placeCharacter/playAll)
+        const scheduleNextLoop = () => {
+            const timeout = setTimeout(() => {
+                // Tidak perlu await di dalam loop, playback sudah async internal
+                this.playCharacterSound(characterId);
+                
+                // Cek apakah loop masih active
+                if (this.activeLoops.has(characterId)) {
+                    scheduleNextLoop();
+                }
+            }, rhythmInterval * 1000);
+
+            if (this.activeLoops.has(characterId)) {
+                this.activeLoops.get(characterId).timeout = timeout;
+            }
+        };
+
+        this.activeLoops.set(characterId, {
+            isLooping: true,
+            timeout: null,
+            rhythmInterval: rhythmInterval
+        });
+
+        scheduleNextLoop();
+        return true;
+    }
+
+    /**
+     * Stop looping sound untuk character
+     * @param {string} characterId - ID character
+     */
+    stopCharacterLoop(characterId) {
+        if (this.activeLoops.has(characterId)) {
+            const loop = this.activeLoops.get(characterId);
+            if (loop.timeout) {
+                clearTimeout(loop.timeout);
+            }
+            this.activeLoops.delete(characterId);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check apakah character sedang looping
+     * @param {string} characterId - ID character
+     * @returns {boolean}
+     */
+    isCharacterLooping(characterId) {
+        return this.activeLoops.has(characterId);
+    }
+
     stopAllSounds() {
         this.audioContext.stopAll();
         this.characters.forEach(sound => {
             sound.isPlaying = false;
         });
+        
+        // Stop semua active loops
+        this.activeLoops.forEach((loop, characterId) => {
+            if (loop.timeout) {
+                clearTimeout(loop.timeout);
+            }
+        });
+        this.activeLoops.clear();
     }
 
     playMultipleSounds(characterIds) {

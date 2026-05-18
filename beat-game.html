@@ -486,6 +486,7 @@
     <!-- Scripts -->
     <script src="admin.js"></script>
     <script src="beat-characters.js"></script>
+    <script src="beat-melodies.js"></script>
     <script src="beat-sounds.js"></script>
     <script src="smart-protection.js"></script>
     <script>
@@ -587,14 +588,19 @@
                 const slotIndex = parseInt(slot.dataset.slot);
 
                 if (characterId) {
-                    this.placeCharacter(slotIndex, characterId);
+                    this.placeCharacter(slotIndex, characterId).catch(err => {
+                        console.error('Error placing character:', err);
+                        this.showNotification('❌ Error loading melody!');
+                    });
                 }
             }
 
-            placeCharacter(slotIndex, characterId) {
+            async placeCharacter(slotIndex, characterId) {
                 this.activeCharacters.forEach((cId, idx) => {
                     if (cId === characterId) {
                         this.activeCharacters.delete(idx);
+                        // Stop loop jika ada
+                        this.soundManager.stopCharacterLoop(characterId);
                     }
                 });
 
@@ -608,32 +614,52 @@
                     const emoji = slot.querySelector('.slot-emoji');
                     emoji.textContent = character.emoji;
 
-                    this.soundManager.playCharacterSound(characterId);
+                    // Play sound first (await untuk melody loading)
+                    await this.soundManager.playCharacterSound(characterId);
+                    
+                    // Mulai looping dengan rhythm interval dari character
+                    this.soundManager.startCharacterLoop(characterId, character.rhythmInterval);
                     
                     slot.classList.add('playing');
                     setTimeout(() => slot.classList.remove('playing'), 400);
                 }
 
-                this.showNotification(`✓ ${character.name} ditambahkan!`);
+                this.showNotification(`✓ ${character.name} dimulai! (${character.rhythmInterval}s per beat)`);
                 this.updateUI();
             }
 
-            playAll() {
+            async playAll() {
                 if (this.activeCharacters.size === 0) {
                     this.showNotification('❌ Drag karakter ke stage dulu!');
                     return;
                 }
 
                 this.isPlaying = true;
+                
+                // Play all characters with melody loading
+                const playPromises = [];
                 this.activeCharacters.forEach((charId, slotIdx) => {
-                    this.soundManager.playCharacterSound(charId);
+                    const character = window.beatCharacterManager.getCharacter(charId);
+                    
+                    // Play pertama kali (async)
+                    playPromises.push(this.soundManager.playCharacterSound(charId));
+                    
                     const slot = document.querySelector(`[data-slot="${slotIdx}"]`);
                     if (slot) {
                         slot.classList.add('playing');
                     }
                 });
 
-                this.showNotification('🎵 Musik dimainkan!');
+                // Tunggu semua melody loading selesai
+                await Promise.all(playPromises);
+
+                // Kemudian start looping
+                this.activeCharacters.forEach((charId, slotIdx) => {
+                    const character = window.beatCharacterManager.getCharacter(charId);
+                    this.soundManager.startCharacterLoop(charId, character.rhythmInterval);
+                });
+
+                this.showNotification('🎵 Ritme dimulai! Musik berirama...');
                 
                 setTimeout(() => {
                     document.querySelectorAll('.char-slot.playing').forEach(slot => {
@@ -703,6 +729,22 @@
         document.addEventListener('DOMContentLoaded', () => {
             window.spunkiGame = new SpunkiGame();
         });
+    </script>
+
+    <!-- DISCLAIMER ENFORCEMENT -->
+    <script>
+        (function() {
+            const DISCLAIMER_KEY = 'sticknext_disclaimer_passed_v1';
+            const currentPage = window.location.pathname;
+            
+            if (currentPage.includes('disclaimer')) return;
+            
+            const disclaimerPassed = localStorage.getItem(DISCLAIMER_KEY);
+            
+            if (disclaimerPassed !== 'true') {
+                window.location.replace('disclaimer.html?return=' + encodeURIComponent(window.location.href));
+            }
+        })();
     </script>
 </body>
 </html>

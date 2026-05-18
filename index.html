@@ -21,6 +21,7 @@
             <a href="about.html">Tentang</a>
             <a href="license.html">Lisensi</a>
             <a href="contact.html">Kontak</a>
+            <a href="disclaimer.html">⚠️ Disclaimer</a>
         </nav>
     </header>
 
@@ -91,6 +92,40 @@
     </div>
 
     <!-- ===== SCRIPTS ===== -->
+    <!-- DISCLAIMER MODAL CHECK - MUST BE FIRST -->
+    <script>
+        (function() {
+            // Cookie handling
+            function getCookie(name) {
+                const nameEQ = name + "=";
+                const cookies = document.cookie.split(';');
+                for(let i = 0; i < cookies.length; i++) {
+                    let cookie = cookies[i].trim();
+                    if (cookie.indexOf(nameEQ) === 0) {
+                        return decodeURIComponent(cookie.substring(nameEQ.length));
+                    }
+                }
+                return null;
+            }
+
+            const DISCLAIMER_COOKIE = 'sticknext_disclaimer_passed';
+            const DISCLAIMER_VERSION = 'v2_2026';
+
+            // Check on page load (delay untuk memastikan cookie teregister)
+            window.addEventListener('load', function() {
+                const disclaimerPassed = getCookie(DISCLAIMER_COOKIE);
+                console.log('📋 Disclaimer check:', disclaimerPassed);
+                
+                if (disclaimerPassed !== DISCLAIMER_VERSION) {
+                    console.log('❌ No valid disclaimer cookie found. Redirecting to modal...');
+                    // No valid cookie, redirect to modal page
+                    window.location.replace('disclaimer-modal.html');
+                } else {
+                    console.log('✅ Valid disclaimer cookie found. Access granted!');
+                }
+            });
+        })();
+    </script>
     <script src="config.js"></script>
     <script src="settings.js"></script>
     <script src="script.js"></script>

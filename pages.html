@@ -239,6 +239,11 @@
                         <div class="page-title">Lisensi</div>
                         <div class="page-desc">Hak cipta & lisensi</div>
                     </a>
+                    <a href="disclaimer.html" class="page-card" data-keywords="peringatan, disclaimer, awas, wajib baca, jangan ditiru, hati hati, pemberitahuan, penting">
+                        <div class="page-icon">⚠️</div>
+                        <div class="page-title">Disclaimer</div>
+                        <div class="page-desc">Peringatan Keras</div>
+                    </a>
                 </div>
             </section>
 
@@ -380,6 +385,22 @@
             // Show initial count
             window.pagesNavigator.filterPages('');
         });
+    </script>
+
+    <!-- DISCLAIMER ENFORCEMENT -->
+    <script>
+        (function() {
+            const DISCLAIMER_KEY = 'sticknext_disclaimer_passed_v1';
+            const currentPage = window.location.pathname;
+            
+            if (currentPage.includes('disclaimer')) return;
+            
+            const disclaimerPassed = localStorage.getItem(DISCLAIMER_KEY);
+            
+            if (disclaimerPassed !== 'true') {
+                window.location.replace('disclaimer.html?return=' + encodeURIComponent(window.location.href));
+            }
+        })();
     </script>
 </body>
 </html>

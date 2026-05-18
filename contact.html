@@ -289,6 +289,22 @@
             }
         }
     </script>
+
+    <!-- DISCLAIMER ENFORCEMENT -->
+    <script>
+        (function() {
+            const DISCLAIMER_KEY = 'sticknext_disclaimer_passed_v1';
+            const currentPage = window.location.pathname;
+            
+            if (currentPage.includes('disclaimer')) return;
+            
+            const disclaimerPassed = localStorage.getItem(DISCLAIMER_KEY);
+            
+            if (disclaimerPassed !== 'true') {
+                window.location.replace('disclaimer.html?return=' + encodeURIComponent(window.location.href));
+            }
+        })();
+    </script>
     <script src="admin.js"></script>
     <script src="settings.js"></script>
 </body>
