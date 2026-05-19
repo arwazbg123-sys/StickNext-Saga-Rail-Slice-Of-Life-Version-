@@ -390,49 +390,243 @@
             }
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .game-header h1 {
-                font-size: 1.3rem;
+        /* Responsive & Mobile Optimized */
+        @media (max-width: 1024px) {
+            .game-container {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .game-stage {
+                flex: 0 1 40vh;
+            }
+
+            .game-controls-wrapper {
+                flex: 0 1 60vh;
+                max-height: 60vh;
             }
 
             .character-slots {
                 padding: 0 20px;
+                height: 200px;
             }
 
             .char-slot {
-                width: 60px;
+                width: 55px;
                 height: 150px;
             }
 
             .char-circle {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+
+            .char-card {
+                width: 65px;
+                height: 85px;
+                font-size: 0.75rem;
+            }
+
+            .card-emoji {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .game-header {
+                padding: 0.8rem;
+            }
+
+            .game-header h1 {
+                font-size: 1.2rem;
+            }
+
+            .game-header p {
+                font-size: 0.7rem;
+            }
+
+            .game-container {
+                flex-direction: column;
+                gap: 0.5rem;
+                height: auto;
+                max-height: 100vh;
+            }
+
+            .game-stage {
+                flex: 0 1 35vh;
+                min-height: 35vh;
+            }
+
+            .game-controls-wrapper {
+                flex: 1;
+                max-height: 65vh;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            }
+
+            .character-slots {
+                padding: 0 15px;
+                height: 180px;
+                bottom: 15px;
+            }
+
+            .char-slot {
                 width: 50px;
-                height: 50px;
-                font-size: 1.5rem;
+                height: 130px;
+            }
+
+            .char-circle {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
             }
 
             .game-controls {
                 flex-direction: column;
-                gap: 1rem;
+                gap: 0.8rem;
+                padding: 1rem 0.5rem;
             }
 
             .control-buttons {
                 width: 100%;
-                justify-content: space-around;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+
+            .control-btn {
+                padding: 0.7rem;
+                font-size: 0.85rem;
             }
 
             .info-panel {
+                flex-direction: column;
+                gap: 0.5rem;
                 width: 100%;
-                justify-content: space-around;
             }
 
-            .char-card {
-                width: 70px;
-                height: 90px;
+            .info-item {
+                flex: 1;
+            }
+
+            .beat-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+                padding: 0.5rem;
+            }
+
+            .character-box {
+                min-height: 90px;
+            }
+
+            .character-emoji {
+                font-size: 2rem;
+            }
+
+            .character-name {
+                font-size: 0.7rem;
+                margin-top: 0.3rem;
+            }
+
+            .character-card {
+                width: 60px;
+                height: 80px;
+                font-size: 0.7rem;
             }
 
             .card-emoji {
-                font-size: 1.5rem;
+                font-size: 1.2rem;
+            }
+
+            .card-name {
+                font-size: 0.65rem;
+                margin-top: 0.2rem;
+            }
+
+            /* Hide details on very small screens */
+            .character-status {
+                display: none;
+            }
+
+            /* Prevent zoom on double-tap */
+            .character-box {
+                touch-action: manipulation;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-header h1 {
+                font-size: 1rem;
+            }
+
+            .game-stage {
+                min-height: 30vh;
+            }
+
+            .character-slots {
+                padding: 0 10px;
+                height: 160px;
+            }
+
+            .char-slot {
+                width: 45px;
+                height: 120px;
+            }
+
+            .char-circle {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            .beat-grid {
+                grid-template-columns: 1fr;
+                padding: 0.3rem;
+            }
+
+            .character-box {
+                min-height: 80px;
+            }
+
+            .character-emoji {
+                font-size: 1.8rem;
+            }
+
+            .control-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .character-card {
+                width: 50px;
+                height: 70px;
+            }
+
+            .card-emoji {
+                font-size: 1rem;
+            }
+
+            .volume-control {
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+
+            .volume-slider {
+                width: 100%;
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .character-box:active {
+                transform: scale(0.98);
+            }
+
+            .char-card:active {
+                transform: scale(0.95);
+            }
+
+            .control-btn:active {
+                transform: scale(0.95);
             }
         }
     </style>
@@ -441,6 +635,10 @@
     <div class="game-header">
         <h1>🎵 StickNext Beat</h1>
         <p>Drag Karaktermu ke Stage & Ciptakan Musik Harmony!</p>
+        <p style="font-size: 0.75rem; opacity: 0.8; margin-top: 0.3rem;">
+            <span class="desktop-hint">💻 Klik + Drag karakter</span>
+            <span class="mobile-hint" style="display: none;">📱 Tap & Hold untuk Drag</span>
+        </p>
     </div>
 
     <div class="game-container">
@@ -489,6 +687,27 @@
     <script src="beat-melodies.js"></script>
     <script src="beat-sounds.js"></script>
     <script src="smart-protection.js"></script>
+    <script>
+        // Detect device type and show appropriate hint
+        (function() {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const desktopHint = document.querySelector('.desktop-hint');
+            const mobileHint = document.querySelector('.mobile-hint');
+            
+            if (isMobile && mobileHint) {
+                desktopHint.style.display = 'none';
+                mobileHint.style.display = 'inline';
+            }
+
+            // Disable context menu on mobile
+            if (isMobile) {
+                document.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    return false;
+                });
+            }
+        })();
+    </script>
     <script>
         /**
          * StickNext Beat - Sprunki-Style Game
