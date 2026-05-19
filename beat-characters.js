@@ -4,30 +4,52 @@
  */
 
 class BeatCharacter {
-    constructor(id, name, emoji, color, soundUrl, bpm = 120, rhythmInterval = 1) {
+    constructor(id, name, emoji, color, soundUrl, bpm = 120, rhythmInterval = 1, frequency = 440, waveform = 'sine', envelope = 'default') {
         this.id = id;
         this.name = name;
         this.emoji = emoji;
         this.color = color;
         this.soundUrl = soundUrl;
         this.bpm = bpm;
-        this.rhythmInterval = rhythmInterval; // Interval dalam detik antara setiap sound playback
+        this.rhythmInterval = rhythmInterval; // Interval dalam beat (synced dengan 120 BPM base)
+        this.frequency = frequency; // Tone frequency untuk konsistensi
+        this.waveform = waveform; // Waveform type
+        this.envelope = envelope; // Audio envelope type
         this.isActive = false;
         this.audioElement = null;
-        this.isLooping = false; // Menandakan karakter sedang loop
-        this.loopTimeout = null; // Timer untuk next loop
+        this.isLooping = false;
+        this.loopTimeout = null;
+        this.audioContext = null; // Reference ke window AudioContext
     }
 
     createAudioElement() {
         if (!this.audioElement) {
             this.audioElement = new Audio(this.soundUrl);
-            this.audioElement.volume = 1;
+            this.audioElement.volume = 0.9;
         }
         return this.audioElement;
     }
 
-    play() {
+    play(useOscillator = true) {
         this.isActive = true;
+        
+        // Try to use oscillator first for consistency
+        if (useOscillator && window.audioContextInstance) {
+            try {
+                const duration = 0.2; // 200ms consistent duration
+                window.audioContextInstance.playNote(
+                    this.frequency,
+                    duration,
+                    this.waveform,
+                    this.envelope
+                );
+                return;
+            } catch (e) {
+                console.warn(`Oscillator failed for ${this.name}, falling back to audio element`, e);
+            }
+        }
+
+        // Fallback to audio element
         const audio = this.createAudioElement();
         audio.currentTime = 0;
         audio.play().catch(e => console.log(`Audio play error for ${this.name}:`, e));
@@ -37,7 +59,6 @@ class BeatCharacter {
         this.isActive = false;
         this.isLooping = false;
         
-        // Clear any pending loop timeout
         if (this.loopTimeout) {
             clearTimeout(this.loopTimeout);
             this.loopTimeout = null;
@@ -58,7 +79,7 @@ class BeatCharacter {
     }
 
     getAudioDuration() {
-        return this.audioElement ? this.audioElement.duration : 0;
+        return this.audioElement ? this.audioElement.duration : 0.2;
     }
 }
 
@@ -78,7 +99,10 @@ class BeatCharacterManager {
                 color: '#ff69b4',
                 soundUrl: 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==',
                 bpm: 120,
-                rhythmInterval: 1.0 // 1 detik
+                rhythmInterval: 0.5, // Beat-synced: every 2 beats (120 BPM = 1 beat = 0.5s)
+                frequency: 440,    // A4
+                waveform: 'sine',
+                envelope: 'pad'
             },
             {
                 id: 'petalina',
@@ -86,8 +110,11 @@ class BeatCharacterManager {
                 emoji: '🌸',
                 color: '#ff1493',
                 soundUrl: 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==',
-                bpm: 115,
-                rhythmInterval: 1.2 // 1.2 detik
+                bpm: 120,
+                rhythmInterval: 0.375, // Beat-synced: every 1.5 beats
+                frequency: 554,    // C#5
+                waveform: 'sine',
+                envelope: 'default'
             },
             {
                 id: 'nitra',
@@ -95,8 +122,11 @@ class BeatCharacterManager {
                 emoji: '⚡',
                 color: '#00bfff',
                 soundUrl: 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==',
-                bpm: 130,
-                rhythmInterval: 0.8 // 0.8 detik
+                bpm: 120,
+                rhythmInterval: 0.25, // Beat-synced: every beat
+                frequency: 659,    // E5
+                waveform: 'square',
+                envelope: 'snappy'
             },
             {
                 id: 'guardian',
@@ -104,8 +134,11 @@ class BeatCharacterManager {
                 emoji: '🛡️',
                 color: '#32cd32',
                 soundUrl: 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==',
-                bpm: 100,
-                rhythmInterval: 2.0 // 2 detik
+                bpm: 120,
+                rhythmInterval: 1.0, // Beat-synced: every 4 beats
+                frequency: 330,    // E4
+                waveform: 'sine',
+                envelope: 'pad'
             },
             {
                 id: 'thunder',
@@ -113,8 +146,11 @@ class BeatCharacterManager {
                 emoji: '⚙️',
                 color: '#ffd700',
                 soundUrl: 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==',
-                bpm: 140,
-                rhythmInterval: 0.6 // 0.6 detik
+                bpm: 120,
+                rhythmInterval: 0.1875, // Beat-synced: every 0.75 beats
+                frequency: 784,    // G5
+                waveform: 'square',
+                envelope: 'staccato'
             },
             {
                 id: 'dash',
@@ -122,8 +158,11 @@ class BeatCharacterManager {
                 emoji: '💨',
                 color: '#00ff00',
                 soundUrl: 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==',
-                bpm: 125,
-                rhythmInterval: 2.0 // 2 detik
+                bpm: 120,
+                rhythmInterval: 0.75, // Beat-synced: every 3 beats
+                frequency: 494,    // B4
+                waveform: 'sine',
+                envelope: 'snappy'
             },
             {
                 id: 'tockay',
@@ -131,8 +170,11 @@ class BeatCharacterManager {
                 emoji: '⏰',
                 color: '#ff4500',
                 soundUrl: 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==',
-                bpm: 110,
-                rhythmInterval: 0.75 // 0.75 detik
+                bpm: 120,
+                rhythmInterval: 0.375, // Beat-synced: every 1.5 beats
+                frequency: 587,    // D5
+                waveform: 'square',
+                envelope: 'snappy'
             },
             {
                 id: 'rail_girl',
@@ -140,8 +182,11 @@ class BeatCharacterManager {
                 emoji: '🚂',
                 color: '#ff00ff',
                 soundUrl: 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==',
-                bpm: 135,
-                rhythmInterval: 1.5 // 1.5 detik
+                bpm: 120,
+                rhythmInterval: 0.5, // Beat-synced: every 2 beats
+                frequency: 392,    // G4
+                waveform: 'sine',
+                envelope: 'default'
             }
         ];
 
@@ -153,7 +198,10 @@ class BeatCharacterManager {
                 data.color,
                 data.soundUrl,
                 data.bpm,
-                data.rhythmInterval
+                data.rhythmInterval,
+                data.frequency,
+                data.waveform,
+                data.envelope
             ));
         });
     }

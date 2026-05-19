@@ -98,7 +98,8 @@ class BeatUIManager {
     }
 
     setupEventListeners() {
-        // Character box clicks
+        // ===== MOUSE / POINTER EVENTS =====
+        // Character box clicks & interactions
         document.addEventListener('click', (e) => {
             const characterBox = e.target.closest('.character-box');
             if (characterBox) {
@@ -107,17 +108,111 @@ class BeatUIManager {
             }
         });
 
-        // Control buttons
+        // ===== TOUCH & DRAG EVENTS (MOBILE OPTIMIZED) =====
+        let draggedElement = null;
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let isDragging = false;
+
+        // Touch start
+        document.addEventListener('touchstart', (e) => {
+            const characterBox = e.target.closest('.character-box');
+            if (characterBox) {
+                draggedElement = characterBox;
+                const touch = e.touches[0];
+                touchStartX = touch.clientX;
+                touchStartY = touch.clientY;
+                characterBox.style.opacity = '0.7';
+                characterBox.style.transform = 'scale(0.95)';
+            }
+        }, { passive: true });
+
+        // Touch move - enable drag visual feedback
+        document.addEventListener('touchmove', (e) => {
+            if (draggedElement) {
+                const touch = e.touches[0];
+                const deltaX = touch.clientX - touchStartX;
+                const deltaY = touch.clientY - touchStartY;
+                const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                
+                if (distance > 10) {
+                    isDragging = true;
+                    draggedElement.style.position = 'fixed';
+                    draggedElement.style.zIndex = '10000';
+                    draggedElement.style.left = touch.clientX - draggedElement.offsetWidth / 2 + 'px';
+                    draggedElement.style.top = touch.clientY - draggedElement.offsetHeight / 2 + 'px';
+                }
+            }
+        }, { passive: true });
+
+        // Touch end
+        document.addEventListener('touchend', (e) => {
+            if (draggedElement) {
+                draggedElement.style.opacity = '1';
+                draggedElement.style.transform = 'scale(1)';
+                if (isDragging) {
+                    draggedElement.style.position = '';
+                    draggedElement.style.zIndex = '';
+                    draggedElement.style.left = '';
+                    draggedElement.style.top = '';
+                }
+                draggedElement = null;
+                isDragging = false;
+                touchStartX = 0;
+                touchStartY = 0;
+            }
+        }, { passive: true });
+
+        // Mouse drag events (desktop)
+        let mouseDownElement = null;
+        document.addEventListener('mousedown', (e) => {
+            const characterBox = e.target.closest('.character-box');
+            if (characterBox && e.button === 0) {
+                mouseDownElement = characterBox;
+                mouseDownElement.style.cursor = 'grab';
+            }
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (mouseDownElement && e.buttons === 1) {
+                mouseDownElement.style.cursor = 'grabbing';
+                mouseDownElement.style.opacity = '0.8';
+            }
+        });
+
+        document.addEventListener('mouseup', (e) => {
+            if (mouseDownElement) {
+                mouseDownElement.style.cursor = 'pointer';
+                mouseDownElement.style.opacity = '1';
+                mouseDownElement = null;
+            }
+        });
+
+        // ===== CONTROL BUTTONS =====
         document.getElementById('playBtn')?.addEventListener('click', () => this.playSelected());
         document.getElementById('pauseBtn')?.addEventListener('click', () => this.pauseAll());
         document.getElementById('stopBtn')?.addEventListener('click', () => this.stopAll());
         document.getElementById('clearBtn')?.addEventListener('click', () => this.clearSelection());
 
-        // Volume control
+        // ===== VOLUME CONTROL =====
         document.getElementById('volumeSlider')?.addEventListener('input', (e) => {
             const volume = e.target.value / 100;
             this.soundManager.setMasterVolume(volume);
             document.getElementById('volumeValue').textContent = e.target.value + '%';
+        });
+
+        // ===== KEYBOARD SHORTCUTS =====
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                this.playSelected();
+            } else if (e.code === 'KeyS') {
+                e.preventDefault();
+                this.stopAll();
+            } else if (e.code === 'KeyC') {
+                e.preventDefault();
+                this.clearSelection();
+            }
         });
     }
 

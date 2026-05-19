@@ -1,6 +1,6 @@
 /**
- * StickNext Beat - Sound Generation & Audio Management
- * Modular audio system untuk game musik interaktif
+ * StickNext Beat - Sound Generation & Audio Management (OPTIMIZED v2)
+ * Modular audio system dengan konsistensi timing & harmoni yang akurat
  */
 
 class AudioContext {
@@ -8,12 +8,29 @@ class AudioContext {
         this.context = new (window.AudioContext || window.webkitAudioContext)();
         this.masterGain = this.context.createGain();
         this.masterGain.connect(this.context.destination);
-        this.masterGain.gain.value = 0.8;
+        this.masterGain.gain.value = 0.7; // Reduced from 0.8 to prevent clipping
         this.playingNotes = new Map();
+        
+        // Timing reference untuk beat consistency
+        this.baseTime = this.context.currentTime;
+        this.bpm = 120;
+        this.beatDuration = 60 / this.bpm; // seconds per beat
     }
 
-    createOscillatorSound(frequency, duration, type = 'sine', envelope = 'default') {
-        const now = this.context.currentTime;
+    // Get current time dalam context
+    getCurrentTime() {
+        return this.context.currentTime - this.baseTime;
+    }
+
+    // Sync ke beat grid terdekat
+    getNextBeatTime(beatOffset = 0) {
+        const currentBeat = this.getCurrentTime() / this.beatDuration;
+        const nextBeat = Math.ceil(currentBeat) + beatOffset;
+        return nextBeat * this.beatDuration + this.baseTime;
+    }
+
+    createOscillatorSound(frequency, duration, type = 'sine', envelope = 'default', startTime = null) {
+        const now = startTime || this.context.currentTime;
         const oscillator = this.context.createOscillator();
         const gainNode = this.context.createGain();
 
@@ -24,15 +41,26 @@ class AudioContext {
         oscillator.connect(gainNode);
 
         if (envelope === 'default') {
-            gainNode.gain.setValueAtTime(0.3, now);
+            // Standard ADSR envelope
+            gainNode.gain.setValueAtTime(0, now);
+            gainNode.gain.linearRampToValueAtTime(0.4, now + 0.01); // Attack: 10ms
             gainNode.gain.exponentialRampToValueAtTime(0.01, now + duration);
         } else if (envelope === 'snappy') {
-            gainNode.gain.setValueAtTime(0.4, now);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, now + duration * 0.5);
+            // Fast attack, fast decay for percussion-like sound
+            gainNode.gain.setValueAtTime(0, now);
+            gainNode.gain.linearRampToValueAtTime(0.5, now + 0.005);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + duration * 0.4);
         } else if (envelope === 'pad') {
-            gainNode.gain.setValueAtTime(0.2, now);
-            gainNode.gain.linearRampToValueAtTime(0.3, now + duration * 0.2);
+            // Smooth, sustained sound
+            gainNode.gain.setValueAtTime(0, now);
+            gainNode.gain.linearRampToValueAtTime(0.3, now + 0.05);
+            gainNode.gain.linearRampToValueAtTime(0.3, now + duration * 0.8);
             gainNode.gain.exponentialRampToValueAtTime(0.01, now + duration);
+        } else if (envelope === 'staccato') {
+            // Very short, punchy
+            gainNode.gain.setValueAtTime(0, now);
+            gainNode.gain.linearRampToValueAtTime(0.45, now + 0.003);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + duration * 0.3);
         }
 
         oscillator.start(now);
@@ -41,14 +69,17 @@ class AudioContext {
         return { oscillator, gainNode };
     }
 
-    playNote(frequency, duration = 0.2, type = 'sine', envelope = 'default') {
-        const key = `${frequency}_${Date.now()}`;
-        const { oscillator, gainNode } = this.createOscillatorSound(frequency, duration, type, envelope);
+    playNote(frequency, duration = 0.2, type = 'sine', envelope = 'default', delay = 0) {
+        const startTime = this.context.currentTime + delay;
+        const key = `${frequency}_${Date.now()}_${Math.random()}`;
+        const { oscillator, gainNode } = this.createOscillatorSound(frequency, duration, type, envelope, startTime);
         this.playingNotes.set(key, { oscillator, gainNode });
 
         setTimeout(() => {
             this.playingNotes.delete(key);
-        }, duration * 1000);
+        }, (duration + delay) * 1000);
+
+        return key;
     }
 
     stopAll() {
